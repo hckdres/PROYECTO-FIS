@@ -7,7 +7,7 @@ import java.sql.Statement;
 import org.h2.tools.Server;
 
 public class H2 {
-    private static final String URL = "jdbc:h2:./data/eventosdb;AUTO_SERVER=TRUE";
+    private static final String URL = "jdbc:h2:./data/eventosdb;DB_CLOSE_DELAY=-1";
     private static final String USER = "sa";
     private static final String PASS = "";
 
@@ -131,6 +131,12 @@ public class H2 {
             org.h2.tools.Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082").start();
             System.out.println("Base de datos inicializada correctamente");
 
+            /*
+            PARA QUE HAGAN EL INGRESO BASE DE DATOS H2:
+            JDBC URL: jdbc:h2:./data/conciertosdb
+            User: sa
+            Password:vacío
+           */
         } catch (SQLException e) {
             e.printStackTrace();
         }

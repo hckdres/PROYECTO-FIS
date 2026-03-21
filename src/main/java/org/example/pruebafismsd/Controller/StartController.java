@@ -20,7 +20,7 @@ public class StartController extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(StartController.class.getResource("/org/example/pruebafismsd/login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
-        stage.setTitle("APP DE MARTIN!");
+        stage.setTitle("GESTOR DE CONCIERTOS.");
         stage.setScene(scene);
         stage.show();
     }
