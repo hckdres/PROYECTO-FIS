@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -17,6 +18,7 @@ public class loginController {
 
     private usuarioRepository usuarioRepo;
 
+    /*CONSTRUCTOR DE LA CLASE*/
     public loginController(usuarioRepository usuarioRepo) {
         this.usuarioRepo = usuarioRepo;
     }
@@ -39,6 +41,7 @@ public class loginController {
     private boolean mostrando = false;
 
     @FXML
+    /*METODO PARA HACER QUE EL '👁' QUE MUESTRA LA CONTRASEÑA FUNCIONE EN EL CAMPO DE CONTRASEÑA*/
     public void togglePassword() {
         if (mostrando) {
             fid_Contrasena.setText(fid_ContrasenaVisible.getText());
@@ -57,7 +60,18 @@ public class loginController {
         mostrando = !mostrando;
     }
 
+    /*METODO PARA CREAR UNA PANTALLA POP UP PARA AVISAR EN CASO DE ERROR*/
+    void AlertaLogin (String CausaError){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error de Login");
+        alert.setHeaderText("No se pudo iniciar sesión");
+        alert.setContentText(CausaError);
+
+        alert.showAndWait(); // Esto abre el POP UP
+    }
+
     @FXML
+    /*METODO PARA PODER IR A LA PANTALLA DE SIGN UP*/
     void On_sign_up(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/org/example/ax0006/signup.fxml")
@@ -74,6 +88,7 @@ public class loginController {
     }
 
     @FXML
+    /*METODO QUE EJECUTA EL LOGIN Y QUE CAMBIA A LA PANTALLA DE MENU SI ESTE ES EXITOSO*/
     void On_login(ActionEvent event) throws IOException {
         if (mostrando) {
             togglePassword();
@@ -83,11 +98,13 @@ public class loginController {
 
         if (usuarioLogin == null) {
             System.out.println("Usuario no existe");
+            AlertaLogin("Error El usuario o contraseña incorrectos");
             return;
         }
 
         if (!usuarioLogin.getContrasena().equals(fid_Contrasena.getText())) {
             System.out.println("Contraseña incorrecta");
+            AlertaLogin("Error El usuario o contraseña incorrectos");
             return;
         }
 
@@ -98,11 +115,14 @@ public class loginController {
                 getClass().getResource("/org/example/ax0006/menu.fxml")
         );
 
-        menuController menuControl = new menuController();
+        menuController menuControl = new menuController(usuarioRepo, usuarioLogin);
 
         loader.setController(menuControl);
 
         Scene scene = new Scene(loader.load());
+
+        /*METODO QUE CAMBIA EL BIENVENIDO POR "BIENVENIDO NOMBRE DEL USUARIO", EN LA SIGUIENTE PANTALLA*/
+        menuControl.setNombreBienvenido();
 
         Stage stage = (Stage) fid_login.getScene().getWindow();
         stage.setScene(scene);
