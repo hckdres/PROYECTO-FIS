@@ -10,6 +10,10 @@ import org.example.ax0006.db.H2;
 
 import java.io.IOException;
 
+//ver base de datos:
+// PAGINA: http://localhost:8082
+// URL: jdbc:h2:./data/eventosdb
+
 public class startController extends Application {
 
     @Override
@@ -52,6 +56,7 @@ public class startController extends Application {
     * 3. AHORA HAY VARIAS CLASES QUE SE INICIALIZAN EN EL MAIN (OSEA EN EL startController)
     * 4. AHORA LAS CLASES TIENEN LOS ATRIBUTOS DE REPOSITORY Y SERVICE PARA PERMITIR LA INYECCION DE DEPENDENCIAS
     * 5. CAMBIOS MENORES AL POM.XML
+    * 6. LOS ARCHIVOS .FXML, NO TIENEN CONTROLADOR POR DEFECTO... OSEA EN EL SCENE BUILDER NO SE LE PONE CONTROLADOR, ATRAVEZ DEL CODIGO SE LE ASIGNA
     * */
 
 }
