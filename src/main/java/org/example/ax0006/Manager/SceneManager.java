@@ -3,10 +3,7 @@ package org.example.ax0006.Manager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.example.ax0006.Controller.LoginController;
-import org.example.ax0006.Controller.MenuController;
-import org.example.ax0006.Controller.SignUpController;
-import org.example.ax0006.Controller.AdminUsuariosController;
+import org.example.ax0006.Controller.*;
 import org.example.ax0006.Repository.UsuarioRepository;
 
 import java.io.IOException;
@@ -49,6 +46,25 @@ public class SceneManager {
                 context.getSesion(), context.getRolService(), this
         );
         loadScene("/org/example/ax0006/adminUsuarios.fxml", controller);
+    }
+
+    //Metodo para mostrar pantalla de perfil del usuario
+    public void showProfile() throws IOException {
+        ProfileController profileController = new ProfileController(
+                this,
+                context.getSesion(),
+                context.getProfileService()
+        );
+        loadScene("/org/example/ax0006/profile.fxml", profileController);
+    }
+
+    public void showEditProfile() throws IOException {
+        EditProfileController editProfileController = new EditProfileController(
+                this,
+                context.getSesion(),
+                context.getProfileService()
+        );
+        loadScene("/org/example/ax0006/editProfile.fxml", editProfileController);
     }
 
 

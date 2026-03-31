@@ -1,9 +1,3 @@
-/*
- * MARTIN SANMIGUEL
- */
-
-
-
 package org.example.ax0006.Entity;
 
 public class Usuario {
@@ -13,6 +7,14 @@ public class Usuario {
     private String gmail;
     private int idRol;
 
+    private String telefono;
+    private String direccion;
+    private String contactoEmergenciaNombre;
+    private String contactoEmergenciaTelefono;
+    private String contactoEmergenciaRelacion;
+
+    private Rol rol; // Traemos Rol para poder asignarlo a ala hora de traerlo al perfil mostrando el nombre y no el numero
+
     public Usuario() {
     }
 
@@ -20,16 +22,16 @@ public class Usuario {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.contrasena = contrasena;
-        this.gmail = gmail;
+        this.gmail = email;
         this.idRol = idRol;
     }
 
-    public String getContrasena() {
-        return contrasena;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {
@@ -38,6 +40,14 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getGmail() {
@@ -56,12 +66,51 @@ public class Usuario {
         this.idRol = idRol;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getContactoEmergenciaNombre() {
+        return contactoEmergenciaNombre;
+    }
+
+    public void setContactoEmergenciaNombre(String contactoEmergenciaNombre) {
+        this.contactoEmergenciaNombre = contactoEmergenciaNombre;
+    }
+
+    public String getContactoEmergenciaTelefono() {
+        return contactoEmergenciaTelefono;
+    }
+
+    public void setContactoEmergenciaTelefono(String contactoEmergenciaTelefono) {
+        this.contactoEmergenciaTelefono = contactoEmergenciaTelefono;
+    }
+
+    public String getContactoEmergenciaRelacion() {
+        return contactoEmergenciaRelacion;
+    }
+
+    public void setContactoEmergenciaRelacion(String contactoEmergenciaRelacion) {
+        this.contactoEmergenciaRelacion = contactoEmergenciaRelacion;
+    }
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 }
-

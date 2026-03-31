@@ -39,7 +39,7 @@ public class StartController extends Application {
 
         // MANAGERS
         SesionManager sesion = new SesionManager();
-        ContextManager context = new ContextManager(autenService,rolService, sesion, h2);
+        ContextManager context = new ContextManager();
         SceneManager sceneManager = new SceneManager(stage, context);
 
         /*METODO PARA QUE EL PROGRAMA MUERA CUANDO SE CIERRA LA VENTANA*/

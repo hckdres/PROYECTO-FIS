@@ -1,6 +1,7 @@
 package org.example.ax0006.Controller;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,9 +56,18 @@ public class MenuController {
         sceneManager.showAdminUsuarios();
     }
 
+    //Boton para entrar al perfil del usuario.
     @FXML
     void On_perfil(ActionEvent event) {
-        System.out.println("Perfil presionado");
+        try {
+            sceneManager.showProfile();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No se pudo abrir la ventana de perfil");
+            alert.setContentText("Ocurrió un problema al cargar la vista.");
+            alert.showAndWait();
+            e.printStackTrace();
+        }
     }
-
 }

@@ -26,14 +26,21 @@ public class H2 {
             """);
 
             stmt.execute("""
-                CREATE TABLE IF NOT EXISTS Usuario (
-                    idUsuario INT AUTO_INCREMENT PRIMARY KEY,
-                    nombre VARCHAR(255) NOT NULL,
-                    gmail VARCHAR(255),
-                    contrasena VARCHAR(255),
-                    idRol INT,
-                    FOREIGN KEY (idRol) REFERENCES Rol(idRol)
-                )
+                    CREATE TABLE IF NOT EXISTS Usuario (
+                idUsuario INT AUTO_INCREMENT PRIMARY KEY,
+                nombre VARCHAR(255) NOT NULL,
+                gmail VARCHAR(255),
+                contrasena VARCHAR(255),
+                idRol INT,
+            
+                telefono VARCHAR(10),
+                direccion VARCHAR(255),
+                contactoEmergenciaNombre VARCHAR(255),
+                contactoEmergenciaTelefono VARCHAR(20),
+                contactoEmergenciaRelacion VARCHAR(100),
+            
+                FOREIGN KEY (idRol) REFERENCES Rol(idRol)
+            )
             """);
 
             stmt.execute("""
