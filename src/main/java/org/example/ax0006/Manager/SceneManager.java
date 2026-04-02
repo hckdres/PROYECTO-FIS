@@ -67,6 +67,14 @@ public class SceneManager {
         loadScene("/org/example/ax0006/editprofile.fxml", editProfileController);
     }
 
+    public void showChangePassword() throws IOException {
+        ChangePasswordController changePasswordController = new ChangePasswordController(
+                this,
+                context.getSesion(),
+                context.getProfileService()
+        );
+        loadScene("/org/example/ax0006/changepassword.fxml", changePasswordController);
+    }
 
     /*METODO PARA NO REPETIR ESTO COMO MIL VECES Y HACER QUE EL CAMBIO DE ESCENA SE VEA MAS LIMPIO*/
     private void loadScene(String fxml, Object controller) throws IOException {
