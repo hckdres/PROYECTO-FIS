@@ -11,6 +11,7 @@ import org.example.ax0006.Repository.RolRepository;
 import org.example.ax0006.Repository.UsuarioRepository;
 import org.example.ax0006.Service.AutenticacionService;
 import org.example.ax0006.Manager.SceneManager;
+import org.example.ax0006.Service.ProfileService;
 import org.example.ax0006.db.H2;
 import org.example.ax0006.Repository.RolRepository;
 import org.example.ax0006.Service.RolService;
@@ -25,6 +26,7 @@ public class StartController extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
+
         // BASE DE DATOS
         H2 h2 = new H2();
         h2.inicializarDB();
@@ -35,17 +37,27 @@ public class StartController extends Application {
 
         // SERVICIOS
         AutenticacionService autenService = new AutenticacionService(usuarioRepo);
+        ProfileService profileService = new ProfileService(usuarioRepo);
         RolService rolService = new RolService(rolRepo, usuarioRepo);
 
         // MANAGERS
         SesionManager sesion = new SesionManager();
-        ContextManager context = new ContextManager(autenService,rolService, sesion, h2);
+        ContextManager context = new ContextManager(
+                h2,
+                usuarioRepo,
+                rolRepo,
+                autenService,
+                profileService,
+                rolService,
+                sesion
+        );
+        context.getH2().inicializarDB();
+
         SceneManager sceneManager = new SceneManager(stage, context);
 
-        /*METODO PARA QUE EL PROGRAMA MUERA CUANDO SE CIERRA LA VENTANA*/
         stage.setOnCloseRequest(event -> {
             Platform.exit();
-            System.exit(0); // asegura cerrar H2 también
+            System.exit(0);
         });
 
         /*SE REALIZA DE ESTA MANERA PARA QUE EL PROGRAMA NO MUERA EN CASO DE UNA EXCEPCION*/

@@ -1,46 +1,65 @@
 package org.example.ax0006.Manager;
 
+import org.example.ax0006.Repository.RolRepository;
+import org.example.ax0006.Repository.UsuarioRepository;
 import org.example.ax0006.Service.AutenticacionService;
+import org.example.ax0006.Service.ProfileService;
 import org.example.ax0006.Service.RolService;
 import org.example.ax0006.db.H2;
 
-
-/*ES LA CLASE QUE DEJA OBTENER LA INFORMACION DE LOS SERIVICIOS Y DE LA SESION*/
 public class ContextManager {
 
-    //informacion de la sesion
+    private H2 h2;
+    private UsuarioRepository usuarioRepository;
+    private RolRepository rolRepository;
+    private AutenticacionService autenService;
+    private ProfileService profileService;
+    private RolService rolService;
     private SesionManager sesion;
 
-    //Servicios
-    private AutenticacionService autenService;
-    private RolService rolService;
-    private H2 h2;
-
-    /*CONSTRUCTOR*/
-    public ContextManager(AutenticacionService autenService, RolService rolService, SesionManager sesion, H2 h2) {
+    public ContextManager(
+            H2 h2,
+            UsuarioRepository usuarioRepository,
+            RolRepository rolRepository,
+            AutenticacionService autenService,
+            ProfileService profileService,
+            RolService rolService,
+            SesionManager sesion
+    ) {
+        this.h2 = h2;
+        this.usuarioRepository = usuarioRepository;
+        this.rolRepository = rolRepository;
         this.autenService = autenService;
+        this.profileService = profileService;
         this.rolService = rolService;
         this.sesion = sesion;
-        this.h2 = h2;
-
-
-    }
-
-    /*RETORNA EL SERVICIO DE AUTENTICACION*/
-    public AutenticacionService getAutenService() {
-        return autenService;
-    }
-
-
-
-    public RolService getRolService() { return rolService; }
-
-    /*RETORNA LA INFORMACION DE LA SESION*/
-    public SesionManager getSesion() {
-        return sesion;
     }
 
     public H2 getH2() {
         return h2;
+    }
+
+    public UsuarioRepository getUsuarioRepository() {
+        return usuarioRepository;
+    }
+
+    public RolRepository getRolRepository() {
+        return rolRepository;
+    }
+
+    public AutenticacionService getAutenService() {
+        return autenService;
+    }
+
+    public ProfileService getProfileService() {
+        return profileService;
+    }
+
+    public RolService getRolService() {
+        return rolService;
+    }
+
+    public SesionManager getSesion() {
+        return sesion;
     }
 }
