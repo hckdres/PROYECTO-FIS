@@ -67,6 +67,7 @@ public class SceneManager {
         loadScene("/org/example/ax0006/editprofile.fxml", editProfileController);
     }
 
+    /*metodo para mostra la pantalla de mostrar los conciertos no programados*/
     public void showChangePassword() throws IOException {
         ChangePasswordController changePasswordController = new ChangePasswordController(
                 this,
