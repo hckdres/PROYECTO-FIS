@@ -11,6 +11,7 @@ import org.example.ax0006.Repository.*;
 import org.example.ax0006.Service.AutenticacionService;
 import org.example.ax0006.Manager.SceneManager;
 import org.example.ax0006.Service.ConciertoService;
+import org.example.ax0006.Service.ContratoService;
 import org.example.ax0006.Service.ProfileService;
 import org.example.ax0006.db.H2;
 import org.example.ax0006.Service.RolService;
@@ -35,12 +36,16 @@ public class StartController extends Application {
         RolRepository rolRepo = new RolRepository(h2);
         HorarioRepository horarioRepo = new HorarioRepository(h2);
         ConciertoRepository conciertoRepo = new ConciertoRepository(h2);
+        ContratoRepository contratoRepo = new ContratoRepository(h2);
+        
 
         // SERVICIOS
         AutenticacionService autenService = new AutenticacionService(usuarioRepo);
         ProfileService profileService = new ProfileService(usuarioRepo);
         RolService rolService = new RolService(rolRepo, usuarioRepo);
         ConciertoService conciertoService = new ConciertoService(conciertoRepo, horarioRepo);
+        ContratoService contratoService = new ContratoService(contratoRepo);
+        
 
         // MANAGERS
         SesionManager sesion = new SesionManager();

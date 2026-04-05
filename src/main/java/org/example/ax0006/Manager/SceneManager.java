@@ -100,5 +100,12 @@ public class SceneManager {
         stage.setScene(scene);
     }
 
+    public void showCrearContrato() throws IOException {
+    CrearContratoController controller = new CrearContratoController(
+            context.getContratoService()
+    );
+    loadScene("/org/example/ax0006/crearContrato.fxml", controller);
+}
+
 
 }
