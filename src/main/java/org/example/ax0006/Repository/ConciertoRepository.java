@@ -55,7 +55,7 @@ public class ConciertoRepository {
 
         String sql = """
         SELECT c.idConcierto, c.aforo, c.programado,
-               h.idHorario, h.fecha, h.horaInc, h.horaFin,
+               h.idHorario, h.fechaInc, h.fechaFin, h.horaInc, h.horaFin,
                u.idUsuario, u.nombre
         FROM Concierto c
         JOIN Horario h ON c.idHorario = h.idHorario
@@ -72,7 +72,8 @@ public class ConciertoRepository {
                 // Horario
                 Horario h = new Horario();
                 h.setIdHorario(rs.getInt("idHorario"));
-                h.setFecha(rs.getDate("fecha").toLocalDate());
+                h.setFechaInicio(rs.getDate("fechaInc").toLocalDate());
+                h.setFechaFin(rs.getDate("fechaFin").toLocalDate());
                 h.setHoraInicio(rs.getTime("horaInc").toLocalTime());
                 h.setHoraFin(rs.getTime("horaFin").toLocalTime());
 
@@ -111,7 +112,7 @@ public class ConciertoRepository {
 
         String sql = """
         SELECT c.idConcierto, c.aforo, c.programado,
-               h.idHorario, h.fecha, h.horaInc, h.horaFin,
+               h.idHorario, h.fechaInc, h.fechaFin, h.horaInc, h.horaFin,
                u.idUsuario, u.nombre
         FROM Concierto c
         JOIN Horario h ON c.idHorario = h.idHorario
@@ -132,7 +133,8 @@ public class ConciertoRepository {
                 // Horario
                 Horario h = new Horario();
                 h.setIdHorario(rs.getInt("idHorario"));
-                h.setFecha(rs.getDate("fecha").toLocalDate());
+                h.setFechaInicio(rs.getDate("fechaInc").toLocalDate());
+                h.setFechaFin(rs.getDate("fechaFin").toLocalDate());
                 h.setHoraInicio(rs.getTime("horaInc").toLocalTime());
                 h.setHoraFin(rs.getTime("horaFin").toLocalTime());
 

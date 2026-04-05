@@ -35,7 +35,10 @@ public class ConciertosProgramadosController {
     private TableColumn<Concierto, String> colArtista;
 
     @FXML
-    private TableColumn<Concierto, String> colFecha;
+    private TableColumn<Concierto, String> colFechaInicio;
+
+    @FXML
+    private TableColumn<Concierto, String> colFechaFin;
 
     @FXML
     private TableColumn<Concierto, String> colHoraInicio;
@@ -66,8 +69,11 @@ public class ConciertosProgramadosController {
         colArtista.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getArtista().getNombre()));
 
-        colFecha.setCellValueFactory(data ->
-                new SimpleStringProperty(data.getValue().getHorario().getFecha().toString()));
+        colFechaInicio.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getHorario().getFechaInicio().toString()));
+
+        colFechaFin.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getHorario().getFechaFin().toString()));
 
         colHoraInicio.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().getHorario().getHoraInicio().toString()));

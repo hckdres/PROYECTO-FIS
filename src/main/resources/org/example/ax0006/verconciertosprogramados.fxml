@@ -45,23 +45,28 @@
 
                         <TableColumn fx:id="colArtista"
                                      text="Artista"
-                                     prefWidth="200.0"/>
+                                     prefWidth="180.0"/>
 
-                        <TableColumn fx:id="colFecha"
-                                     text="Fecha"
+                        <!-- NUEVAS COLUMNAS -->
+                        <TableColumn fx:id="colFechaInicio"
+                                     text="Fecha Inicio"
+                                     prefWidth="150.0"/>
+
+                        <TableColumn fx:id="colFechaFin"
+                                     text="Fecha Fin"
                                      prefWidth="150.0"/>
 
                         <TableColumn fx:id="colHoraInicio"
                                      text="Hora Inicio"
-                                     prefWidth="150.0"/>
+                                     prefWidth="130.0"/>
 
                         <TableColumn fx:id="colHoraFin"
                                      text="Hora Fin"
-                                     prefWidth="150.0"/>
+                                     prefWidth="130.0"/>
 
                         <TableColumn fx:id="colAforo"
                                      text="Aforo"
-                                     prefWidth="120.0"/>
+                                     prefWidth="100.0"/>
 
                         <TableColumn fx:id="colAccion"
                                      text="Cancelar"
