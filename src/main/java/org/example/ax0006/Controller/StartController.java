@@ -59,7 +59,9 @@ public class StartController extends Application {
                 profileService,
                 rolService,
                 conciertoService,
-                sesion
+                sesion,
+                contratoRepo,
+                contratoService
         );
 
         SceneManager sceneManager = new SceneManager(stage, context);
