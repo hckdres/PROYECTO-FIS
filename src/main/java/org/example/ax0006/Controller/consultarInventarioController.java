@@ -2,40 +2,37 @@ package org.example.ax0006.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import org.example.ax0006.Service.InventarioObjetoService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.example.ax0006.Entity.Inventario;
+import org.example.ax0006.Service.consultarInventarioService;
 
-public class asignarObjetoController {
+public class consultarInventarioController {
 
-    public Button bt_asignar;
-    private InventarioObjetoService service;
-    @FXML
-    private Button bt_volver;
+    private consultarInventarioService service;
 
-    public asignarObjetoController(InventarioObjetoService service) {
+    public consultarInventarioController(consultarInventarioService service) {
         this.service = service;
     }
 
-    @FXML private TextField ii_inventario;
-    @FXML private TextField ii_objeto;
-    @FXML private Label lbl_msg;
+    @FXML private TextField ii_idInventario;
+    @FXML private Label lbl_resultado;
+    @FXML private Button bt_buscar;
+    @FXML private Button bt_volver;
 
     @FXML
-    void on_bt_asignar(ActionEvent event) {
+    void on_bt_buscar(ActionEvent event) {
         try {
-            int inv = Integer.parseInt(ii_inventario.getText());
-            int obj = Integer.parseInt(ii_objeto.getText());
+            int id = Integer.parseInt(ii_idInventario.getText());
 
-            service.asignarObjetoAInventario(inv, obj);
-            lbl_msg.setText("Asignado");
+            String detalle = service.obtenerDetalle(id);
+
+            lbl_resultado.setText(detalle);
 
         } catch (Exception e) {
-            lbl_msg.setText("Error en datos");
+            lbl_resultado.setText("Error en datos");
         }
     }
 

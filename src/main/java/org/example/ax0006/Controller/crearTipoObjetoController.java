@@ -2,13 +2,20 @@ package org.example.ax0006.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.example.ax0006.Service.crearTipoObjetoService;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class crearTipoObjetoController {
 
+    public Button bt_crear;
     private crearTipoObjetoService service;
+    @FXML
+    private Button bt_volver;
 
     public crearTipoObjetoController(crearTipoObjetoService service) {
         this.service = service;
@@ -26,8 +33,30 @@ public class crearTipoObjetoController {
             return;
         }
 
-        service.crearTipoObjeto(nombre);
-        lbl_msg.setText("Tipo creado");
+        int id = service.crearTipoObjeto(ii_nombre.getText());
+        lbl_msg.setText("Tipo creado con ID: "+id);
         ii_nombre.clear();
+    }
+
+
+    @FXML
+    void on_bt_volver(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/org/example/ax0006/menu.fxml")
+            );
+
+            menuController controller = new menuController(null, null);
+
+            loader.setController(controller);
+
+            Scene scene = new Scene(loader.load());
+
+            Stage stage = (Stage) bt_volver.getScene().getWindow();
+            stage.setScene(scene);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -10,10 +10,8 @@ public class crearTipoObjetoService {
         this.tipoObjetoRepository = tipoObjetoRepository;
     }
 
-    public boolean crearTipoObjeto(String nombre) {
+    public int crearTipoObjeto(String nombre) {
         TipoObjeto tipoObjeto = new TipoObjeto(nombre);
-        tipoObjetoRepository.guardarTipoObjeto(tipoObjeto);
-        return true;
-
+        return tipoObjetoRepository.guardarTipoObjeto(tipoObjeto);
     }
 }

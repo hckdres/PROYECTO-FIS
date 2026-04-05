@@ -1,13 +1,11 @@
 package org.example.ax0006.Repository;
 
+import org.example.ax0006.Entity.Inventario;
 import org.example.ax0006.Entity.TipoObjeto;
 import org.example.ax0006.Entity.usuario;
 import org.example.ax0006.db.H2;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,16 +21,22 @@ public class TipoObjetoRepository {
     }
 
     //INSERTA TIPOS DE OBJETOS A LA BASE SE DATOS CON AYUDA DEL INSERT INTO A TipoObjeto:
-    public void guardarTipoObjeto(TipoObjeto TO) {
+    public int guardarTipoObjeto(TipoObjeto TO) {
         String sql = "INSERT INTO TipoObjeto (nombre) VALUES (?)";
         try (Connection conn = h2.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
             stmt.setString(1, TO.getNombre());
             stmt.executeUpdate();
-            System.out.println("Tipo Objeto guardado en BD: " + TO.getNombre());
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int idGenerado = rs.getInt(1);
+                System.out.println("Tipo Objeto guardado en BD: " + TO.getNombre());
+                return idGenerado;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     //SE HACE LA CONSULTA AL NOMBRE QUE SE RECIBE COMO PARAMETRO A LA BASE DE DATOS.

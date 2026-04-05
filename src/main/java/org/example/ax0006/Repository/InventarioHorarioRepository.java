@@ -21,11 +21,11 @@ public class InventarioHorarioRepository {
             stmt.setInt(1, inventarioId);
             stmt.setInt(2, idHorario);
             stmt.executeUpdate();
-            System.out.println("Objeto agregado al Inventario correctamente");
+            System.out.println("Horario agregado al Inventario correctamente");
 
         } catch (SQLException e) {
             if (e.getMessage().toLowerCase().contains("constraint")) {
-                System.out.println("Ya está ese Objeto en ese Inventario o no existe la relación válida");
+                System.out.println("Ya está ese horario en ese Inventario o no existe la relación válida");
             } else {
                 e.printStackTrace();
             }

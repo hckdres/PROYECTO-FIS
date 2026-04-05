@@ -11,10 +11,8 @@ public class InventarioService {
         this.inventarioRepository = inventarioRepository;
     }
 
-    public boolean crearInventario() {
+    public int crearInventario() {
         Inventario inventario = new Inventario();
-        inventarioRepository.guardarInventario(inventario);
-        return true;
-
+        return inventarioRepository.guardarInventario(inventario);
     }
 }

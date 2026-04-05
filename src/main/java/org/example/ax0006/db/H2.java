@@ -77,15 +77,18 @@ public class H2 {
             """);
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS Inventario(
-                    idInventario INT AUTO_INCREMENT PRIMARY KEY,
+                    idInventario INT AUTO_INCREMENT PRIMARY KEY
                 )
             """);
+//            stmt.execute("""
+//            DROP TABLE ObjetoInventario;
+//            """);
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS ObjetoInventario (
-                    PRIMARY KEY (idInventario, idInventario),
                     idInventario INT,
-                    FOREIGN KEY (idInventario) REFERENCES Inventario(idInventario),
                     idTipoObjeto INT,
+                    PRIMARY KEY (idInventario, idTipoObjeto),
+                    FOREIGN KEY (idInventario) REFERENCES Inventario(idInventario),
                     FOREIGN KEY (idTipoObjeto) REFERENCES TipoObjeto(idTipoObjeto)
                 )
             """);
@@ -129,7 +132,7 @@ public class H2 {
                     idInventario INT,
                     idConcierto INT,
                     PRIMARY KEY (idInventario, idConcierto),
-                    FOREIGN KEY (idInventario) REFERENCES ObjetoInventario(idInventario),
+                    FOREIGN KEY (idInventario) REFERENCES Inventario(idInventario),
                     FOREIGN KEY (idConcierto) REFERENCES Concierto(idConcierto)
                 )
             """);
