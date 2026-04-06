@@ -94,11 +94,7 @@ public class EditProfileController {
         ii_TelefonoEmergencia.setText(valorSeguro(usuarioCompleto.getContactoEmergenciaTelefono()));
         cb_RelacionEmergencia.setValue(valorSeguro(usuarioCompleto.getContactoEmergenciaRelacion()));
 
-        if (usuarioCompleto.getRol() != null) {
-            lblRol.setText(valorSeguro(usuarioCompleto.getRol().getRol()));
-        } else {
-            lblRol.setText("Sin rol");
-        }
+        lblRol.setText(profileService.obtenerRolesDelUsuario(usuarioCompleto.getIdUsuario()));
     }
 
     @FXML

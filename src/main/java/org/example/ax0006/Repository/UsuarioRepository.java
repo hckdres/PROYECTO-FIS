@@ -104,6 +104,29 @@ public class UsuarioRepository {
         return lista;
     }
 
+
+    public String obtenerRolesDelUsuario(int idUsuario) {
+        String sql = """
+        SELECT DISTINCT r.rol FROM RolConciertoUsuario rcu
+        JOIN Rol r ON rcu.idRol = r.idRol
+        WHERE rcu.idUsuario = ?
+    """;
+        List<String> roles = new ArrayList<>();
+        try (Connection conn = h2.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUsuario);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                roles.add(rs.getString("rol"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return roles.isEmpty() ? "Sin rol" : String.join(", ", roles);
+    }
+
+
+
     //PERMITE BUSCAR EL USUARIO Y MOSTRARLO EN SU PERFIL
     public Usuario buscarCompletoPorId(int idUsuario) {
         String sql = """
