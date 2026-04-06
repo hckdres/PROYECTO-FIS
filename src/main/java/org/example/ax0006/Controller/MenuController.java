@@ -127,5 +127,12 @@ public class MenuController {
         sceneManager.showConciertosProgramados();
     }
 
+    @FXML Button fid_Menu_Conciertos;
+
+    @FXML
+    void On_Menu_Conciertos(ActionEvent event) throws IOException{
+        sceneManager.showMenuConcierto();
+    }
+
 
 }
