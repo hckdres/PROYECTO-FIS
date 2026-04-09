@@ -13,9 +13,13 @@ public class StaffService {
     private final UsuarioRepository usuarioRepository;
     private final AsignacionStaffRepository asignacionStaffRepository;
 
-    public StaffService(H2 h2) {
-        this.usuarioRepository = new UsuarioRepository(h2);
-        this.asignacionStaffRepository = new AsignacionStaffRepository(h2);
+    //Correcion de recibir repositorios ya creados.
+
+
+
+    public StaffService(UsuarioRepository usuarioRepository, AsignacionStaffRepository asignacionStaffRepository) {
+        this.usuarioRepository = usuarioRepository;
+        this.asignacionStaffRepository = asignacionStaffRepository;
     }
 
     public boolean crearEmpleado(String nombre, String contrasena, String gmail) {
@@ -26,14 +30,13 @@ public class StaffService {
         nuevo.setNombre(nombre);
         nuevo.setContrasena(contrasena);
         nuevo.setGmail(gmail);
-        nuevo.setIdRol(4); // Staff
+
         usuarioRepository.guardar(nuevo);
         return true;
     }
 
     public List<Usuario> listarEmpleados() {
         return usuarioRepository.obtenerUsuarios().stream()
-                .filter(u -> u.getIdRol() == 4)
                 .collect(Collectors.toList());
     }
 
@@ -52,5 +55,22 @@ public class StaffService {
     public double generarNomina(int idConcierto) {
         // TODO: implementar cálculo real
         return 0.0;
+    }
+
+
+
+    // Retorna los ids de todos los usuarios que tienen al menos una asignación en RolConciertoUsuario
+    public List<Integer> obtenerIdsUsuariosAsignados() {
+        return asignacionStaffRepository.obtenerIdsUsuariosAsignados();
+    }
+
+    // Retorna los usuarios asignados a un concierto específico
+    public List<Usuario> obtenerUsuariosPorConcierto(int idConcierto) {
+        return asignacionStaffRepository.obtenerUsuariosPorConcierto(idConcierto);
+    }
+
+    // Retorna el nombre del rol del usuario en un concierto específico
+    public String obtenerNombreRolEnConcierto(int idUsuario, int idConcierto) {
+        return asignacionStaffRepository.obtenerNombreRolEnConcierto(idUsuario, idConcierto);
     }
 }
