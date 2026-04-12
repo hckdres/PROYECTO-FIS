@@ -35,7 +35,14 @@
    
                        <!-- CONSULTAR PROGRAMADOS -->
                        <Button fx:id="fid_bt_ConsultarProgramados" onAction="#On_ConsultarCProgramado" prefWidth="300" style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-background-radius: 8;" text="Conciertos Programados" />
-   
+
+
+                        <!-- CREAR CONTRATOS -->
+                       <Button fx:id="fid_bt_CrearContrato" onAction="#On_CrearContrato" prefWidth="300" style="-fx-background-color: #ffa812; -fx-text-fill: white; -fx-background-radius: 8;" text="Crear Contrato" />
+
+                        <!-- CONSULTAR CONTRATOS -->
+                       <Button fx:id="fid_bt_ConsultarContrato" onAction="#On_ConsultarContrato" prefWidth="300" style="-fx-background-color: #e43737; -fx-text-fill: white; -fx-background-radius: 8;" text="Consultar Contrato" />
+
                        <!-- VOLVER -->
                        <Button fx:id="fid_bt_volver" onAction="#On_btvolver" prefWidth="300" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 8;" text="volver al menu" />
    </children>
