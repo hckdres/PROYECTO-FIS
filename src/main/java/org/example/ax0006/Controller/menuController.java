@@ -49,7 +49,6 @@ public class MenuController {
 
     @FXML private Button bt_crearInventario;
     @FXML private Button bt_crearTipoObjeto;
-    @FXML private Button bt_asignarObjeto;
     @FXML private Button bt_consultarInventario;
 
     @FXML
@@ -103,11 +102,6 @@ public class MenuController {
     @FXML
     void on_bt_crearTipoObjeto(ActionEvent event) throws IOException {
         sceneManager.showCrearTipoObjeto();
-    }
-
-    @FXML
-    void on_bt_asignarObjeto(ActionEvent event) throws IOException {
-        sceneManager.showAsignarObjeto();
     }
 
     @FXML

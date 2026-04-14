@@ -3,6 +3,8 @@ package org.example.ax0006.Service;
 import org.example.ax0006.Entity.TipoObjeto;
 import org.example.ax0006.Repository.TipoObjetoRepository;
 
+import java.util.List;
+
 public class crearTipoObjetoService {
     private TipoObjetoRepository tipoObjetoRepository;
 
@@ -13,5 +15,9 @@ public class crearTipoObjetoService {
     public int crearTipoObjeto(String nombre) {
         TipoObjeto tipoObjeto = new TipoObjeto(nombre);
         return tipoObjetoRepository.guardarTipoObjeto(tipoObjeto);
+    }
+
+    public List<TipoObjeto> obtenerTodos() {
+        return tipoObjetoRepository.obtenerTodos();
     }
 }

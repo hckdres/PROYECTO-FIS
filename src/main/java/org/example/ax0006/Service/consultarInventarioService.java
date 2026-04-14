@@ -1,7 +1,8 @@
 package org.example.ax0006.Service;
 
-import org.example.ax0006.Entity.Inventario;
 import org.example.ax0006.Repository.InventarioRepository;
+
+import java.util.List;
 
 public class consultarInventarioService {
 
@@ -11,11 +12,11 @@ public class consultarInventarioService {
         this.inventarioRepository = inventarioRepository;
     }
 
-    public Inventario consultarPorId(int id) {
-        return inventarioRepository.buscarInventarioPorId(id);
-    }
-
     public String obtenerDetalle(int id) {
         return inventarioRepository.obtenerDetalleInventario(id);
+    }
+
+    public List<Integer> listarIdsInventarios() {
+        return inventarioRepository.obtenerTodosLosIds();
     }
 }

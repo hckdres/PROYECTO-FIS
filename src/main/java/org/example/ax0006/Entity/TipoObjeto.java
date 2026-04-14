@@ -19,4 +19,13 @@ public class TipoObjeto {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public void setIdTipoObjeto(int idTipoObjeto) {
+        this.idTipoObjeto = idTipoObjeto;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

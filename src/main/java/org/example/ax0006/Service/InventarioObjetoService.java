@@ -1,5 +1,6 @@
 package org.example.ax0006.Service;
 
+import org.example.ax0006.Entity.Horario;
 import org.example.ax0006.Repository.InventarioObjetoRepository;
 
 public class InventarioObjetoService {
@@ -12,4 +13,10 @@ public class InventarioObjetoService {
     public int asignarObjetoAInventario(int inventarioId, int objetoId) {
         return inventarioObjetoRepository.guardarObjetoEnInventario(inventarioId, objetoId);
     }
+
+    public boolean objetoEnUsoEnRango(int objetoId, Horario h) {
+        return inventarioObjetoRepository.objetoEnUsoEnRango(objetoId, h);
+    }
+
+
 }

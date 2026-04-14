@@ -10,24 +10,48 @@
 
     <children>
 
-        <Text layoutX="450.0" layoutY="100.0" text="Crear Inventario">
-            <font><Font size="26.0"/></font>
+        <Text layoutX="380.0" layoutY="100.0" text="Crear Inventario + Asignar">
+            <font><Font size="24.0"/></font>
         </Text>
 
-        <Button fx:id="bt_crear" layoutX="500.0" layoutY="300.0"
-                text="Crear Inventario" onAction="#on_bt_crear"/>
+        <!-- HORARIO -->
+        <DatePicker fx:id="dp_fechaInicio" layoutX="400.0" layoutY="180.0"/>
+        <DatePicker fx:id="dp_fechaFin" layoutX="600.0" layoutY="180.0"/>
 
-        <Label fx:id="lbl_msg" layoutX="500.0" layoutY="360.0"/>
+        <TextField fx:id="tf_horaInicio" layoutX="400.0" layoutY="230.0" promptText="HH:mm"/>
+        <TextField fx:id="tf_horaFin" layoutX="600.0" layoutY="230.0" promptText="HH:mm"/>
 
-        <DatePicker fx:id="dp_fechaInicio" layoutX="450.0" layoutY="200.0"/>
-        <DatePicker fx:id="dp_fechaFin" layoutX="650.0" layoutY="200.0"/>
+        <!-- CONTENEDOR DE OBJETOS -->
+        <Label layoutX="400.0" layoutY="280.0" text="Objetos:"/>
 
-        <TextField fx:id="tf_horaInicio" layoutX="450.0" layoutY="250.0" promptText="HH:mm"/>
-        <TextField fx:id="tf_horaFin" layoutX="650.0" layoutY="250.0" promptText="HH:mm"/>
+        <VBox fx:id="contenedorObjetos"
+              layoutX="400.0"
+              layoutY="310.0"
+              spacing="10.0"/>
+
+        <!-- BOTÓN AGREGAR -->
+        <Button fx:id="bt_agregarObjeto"
+                layoutX="400.0"
+                layoutY="450.0"
+                text="Añadir otro objeto"
+                onAction="#on_bt_agregarObjeto"/>
+
+        <!-- CREAR -->
+        <Button fx:id="bt_crear"
+                layoutX="520.0"
+                layoutY="500.0"
+                text="Crear y Asignar"
+                onAction="#on_bt_crear"/>
+
+        <Label fx:id="lbl_msg"
+               layoutX="520.0"
+               layoutY="560.0"/>
 
         <Button fx:id="bt_volver"
-                layoutX="1100.0" layoutY="740.0"
+                layoutX="1100.0"
+                layoutY="740.0"
                 text="Volver"
                 onAction="#on_bt_volver"/>
+
     </children>
 </Pane>

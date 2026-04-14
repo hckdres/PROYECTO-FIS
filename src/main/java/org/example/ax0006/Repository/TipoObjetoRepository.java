@@ -12,7 +12,6 @@ import java.util.List;
 public class TipoObjetoRepository {
 
     private H2 h2;
-    private List<TipoObjeto> tiposObjetos = new ArrayList<>();
 
     //CONSTRUCTOR
 
@@ -39,19 +38,25 @@ public class TipoObjetoRepository {
         return -1;
     }
 
-    //SE HACE LA CONSULTA AL NOMBRE QUE SE RECIBE COMO PARAMETRO A LA BASE DE DATOS.
-    public TipoObjeto buscarPorNombreTipoObjeto(String nombre) {
-        String sql = "SELECT nombre, idTipoObjeto FROM TipoObjeto WHERE nombre = ?";
+    public List<TipoObjeto> obtenerTodos() {
+        List<TipoObjeto> lista = new ArrayList<>();
+
+        String sql = "SELECT idTipoObjeto, nombre FROM TipoObjeto";
+
         try (Connection conn = h2.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, nombre);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return new TipoObjeto(rs.getString("nombre"));
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                TipoObjeto t = new TipoObjeto(rs.getString("nombre"));
+                t.setIdTipoObjeto(rs.getInt("idTipoObjeto"));
+                lista.add(t);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return lista;
     }
 }

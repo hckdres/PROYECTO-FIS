@@ -1,5 +1,6 @@
 package org.example.ax0006.Repository;
 
+import org.example.ax0006.Entity.Horario;
 import org.example.ax0006.Entity.Inventario;
 import org.example.ax0006.db.H2;
 
@@ -73,4 +74,40 @@ public class InventarioObjetoRepository {
         return -1;
     }
 
+    public boolean objetoEnUsoEnRango(int objetoId, Horario hNuevo) {
+
+        String sql = """
+    SELECT 1
+    FROM ObjetoInventario oi
+    JOIN InventarioHorario ih ON oi.idInventario = ih.idInventario
+    JOIN Horario h ON ih.idHorario = h.idHorario
+    WHERE oi.idTipoObjeto = ?
+    AND (
+        CAST(h.fechaInc || ' ' || h.horaInc AS TIMESTAMP) < CAST(? || ' ' || ? AS TIMESTAMP)
+        AND
+        CAST(h.fechaFin || ' ' || h.horaFin AS TIMESTAMP) > CAST(? || ' ' || ? AS TIMESTAMP)
+    )
+""";
+        try (Connection conn = h2.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, objetoId);
+
+            // nuevo FIN
+            stmt.setDate(2, Date.valueOf(hNuevo.getFechaFin()));
+            stmt.setTime(3, Time.valueOf(hNuevo.getHoraFin()));
+
+            // nuevo INICIO
+            stmt.setDate(4, Date.valueOf(hNuevo.getFechaInicio()));
+            stmt.setTime(5, Time.valueOf(hNuevo.getHoraInicio()));
+
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

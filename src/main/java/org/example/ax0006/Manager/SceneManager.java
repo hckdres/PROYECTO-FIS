@@ -91,10 +91,14 @@ public class SceneManager {
     }
 
     public void showCrearInventario() throws IOException {
+
         crearInventarioController controller = new crearInventarioController(
                 context.getInventarioService(),
+                context.getInventarioObjetoService(),
+                context.getCrearTipoObjetoService(),
                 this
         );
+
         loadScene("/org/example/ax0006/crearInventario.fxml", controller);
     }
 
@@ -104,14 +108,6 @@ public class SceneManager {
                 this
         );
         loadScene("/org/example/ax0006/crearTipoObjeto.fxml", controller);
-    }
-
-    public void showAsignarObjeto() throws IOException {
-        asignarObjetoController controller = new asignarObjetoController(
-                context.getInventarioObjetoService(),
-                this
-        );
-        loadScene("/org/example/ax0006/asignarObjeto.fxml", controller);
     }
 
     public void showConsultarInventario() throws IOException {

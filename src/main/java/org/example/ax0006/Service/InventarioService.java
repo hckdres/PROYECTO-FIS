@@ -28,4 +28,9 @@ public class InventarioService {
 
         return -1;
     }
+
+    public boolean existeHorario(Horario h) {
+        return inventarioRepository.existeHorario(h);
+    }
+
 }

@@ -12,7 +12,6 @@ import java.util.List;
 
 public class InventarioRepository {
     private H2 h2;
-    private List<Inventario> Inventarios = new ArrayList<>();
 
     //CONSTRUCTOR
     public InventarioRepository(H2 h2) {
@@ -150,5 +149,49 @@ public class InventarioRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean existeHorario(Horario h) {
+
+        String sql = """
+        SELECT 1
+        FROM Horario
+        WHERE fechaInc = ?
+        AND fechaFin = ?
+        AND horaInc = ?
+        AND horaFin = ?
+    """;
+
+        try (Connection conn = h2.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(h.getFechaInicio()));
+            stmt.setDate(2, Date.valueOf(h.getFechaFin()));
+            stmt.setTime(3, Time.valueOf(h.getHoraInicio()));
+            stmt.setTime(4, Time.valueOf(h.getHoraFin()));
+
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public List<Integer> obtenerTodosLosIds() {
+        List<Integer> ids = new ArrayList<>();
+        String sql = "SELECT idInventario FROM Inventario";
+        try (Connection conn = h2.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                ids.add(rs.getInt("idInventario"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ids;
     }
 }
