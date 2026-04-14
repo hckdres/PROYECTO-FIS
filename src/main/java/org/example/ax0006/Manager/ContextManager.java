@@ -1,14 +1,7 @@
 package org.example.ax0006.Manager;
 
-import org.example.ax0006.Repository.ConciertoRepository;
-import org.example.ax0006.Repository.HorarioRepository;
-import org.example.ax0006.Repository.RolRepository;
-import org.example.ax0006.Repository.UsuarioRepository;
+import org.example.ax0006.Repository.*;
 import org.example.ax0006.Service.*;
-import org.example.ax0006.Service.AutenticacionService;
-import org.example.ax0006.Service.ConciertoService;
-import org.example.ax0006.Service.ProfileService;
-import org.example.ax0006.Service.RolService;
 import org.example.ax0006.db.H2;
 
 public class ContextManager {
@@ -25,6 +18,10 @@ public class ContextManager {
     private ConciertoRepository conciertoRepo;
     private StaffService staffService;
 
+    private InventarioService inventarioService;
+    private crearTipoObjetoService crearTipoObjetoService;
+    private InventarioObjetoService inventarioObjetoService;
+    private consultarInventarioService consultarInventarioService;
 
     public ContextManager(
             H2 h2,
@@ -37,7 +34,11 @@ public class ContextManager {
             RolService rolService,
             ConciertoService conciertoService,
             SesionManager sesion,
-            StaffService staffService
+            StaffService staffService,
+            InventarioService inventarioService,
+            crearTipoObjetoService crearTipoObjetoService,
+            InventarioObjetoService inventarioObjetoService,
+            consultarInventarioService consultarInventarioService
     ) {
         this.h2 = h2;
         this.usuarioRepository = usuarioRepository;
@@ -50,6 +51,11 @@ public class ContextManager {
         this.rolService = rolService;
         this.sesion = sesion;
         this.staffService = staffService;
+
+        this.inventarioService = inventarioService;
+        this.crearTipoObjetoService = crearTipoObjetoService;
+        this.inventarioObjetoService = inventarioObjetoService;
+        this.consultarInventarioService = consultarInventarioService;
     }
 
     public H2 getH2() {
@@ -80,7 +86,27 @@ public class ContextManager {
         return sesion;
     }
 
-    public ConciertoService getConciertoService() {return conciertoService;}
+    public ConciertoService getConciertoService() {
+        return conciertoService;
+    }
 
-    public StaffService getStaffService() { return staffService; }
+    public StaffService getStaffService() {
+        return staffService;
+    }
+
+    public InventarioService getInventarioService() {
+        return inventarioService;
+    }
+
+    public crearTipoObjetoService getCrearTipoObjetoService() {
+        return crearTipoObjetoService;
+    }
+
+    public InventarioObjetoService getInventarioObjetoService() {
+        return inventarioObjetoService;
+    }
+
+    public consultarInventarioService getConsultarInventarioService() {
+        return consultarInventarioService;
+    }
 }

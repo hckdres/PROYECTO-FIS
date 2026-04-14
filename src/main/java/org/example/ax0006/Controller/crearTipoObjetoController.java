@@ -15,11 +15,12 @@ import java.io.IOException;
 
 public class crearTipoObjetoController {
 
-    public Button bt_crear;
     private crearTipoObjetoService service;
     private SceneManager sceneManager;
     @FXML
     private Button bt_volver;
+    @FXML
+    public Button bt_crear;
 
     public crearTipoObjetoController(crearTipoObjetoService service, SceneManager sceneManager) {
         this.service = service;

@@ -30,14 +30,12 @@ public class crearInventarioController {
     void on_bt_crear(ActionEvent event) {
 
         try {
-            // 🔹 Crear objeto Horario con los datos del formulario
             Horario horario = new Horario();
             horario.setFechaInicio(dp_fechaInicio.getValue());
             horario.setFechaFin(dp_fechaFin.getValue());
             horario.setHoraInicio(LocalTime.parse(tf_horaInicio.getText()));
             horario.setHoraFin(LocalTime.parse(tf_horaFin.getText()));
 
-            // 🔹 Llamar al nuevo método del service
             int id = service.crearInventario(horario);
 
             if (id != -1) {

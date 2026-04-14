@@ -66,6 +66,14 @@
                             </children>
                         </VBox>
 
+                        <VBox prefHeight="450.0" prefWidth="280.0" spacing="22.0">
+                            <children>
+                                <Button fx:id="bt_crearInventario" mnemonicParsing="false" onAction="#on_bt_crearInventario" prefHeight="120.0" prefWidth="280.0" style="-fx-background-color: #ffffff; -fx-text-fill: #1f2937; -fx-font-size: 17px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-color: #dbe2ea; -fx-border-radius: 18; -fx-border-width: 1.2; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 2);" text="Crear Inventario" />
+                                <Button fx:id="bt_crearTipoObjeto" mnemonicParsing="false" onAction="#on_bt_crearTipoObjeto" prefHeight="120.0" prefWidth="280.0" style="-fx-background-color: #ffffff; -fx-text-fill: #1f2937; -fx-font-size: 17px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-color: #dbe2ea; -fx-border-radius: 18; -fx-border-width: 1.2; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 2);" text="Crear Tipo de Objeto" />
+                                <Button fx:id="bt_asignarObjeto" mnemonicParsing="false" onAction="#on_bt_asignarObjeto" prefHeight="120.0" prefWidth="280.0" style="-fx-background-color: #ffffff; -fx-text-fill: #1f2937; -fx-font-size: 17px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-color: #dbe2ea; -fx-border-radius: 18; -fx-border-width: 1.2; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 2);" text="Asignar Objeto a Inventario" />
+                                <Button fx:id="bt_consultarInventario" mnemonicParsing="false" onAction="#on_bt_consultarInventario" prefHeight="120.0" prefWidth="280.0" style="-fx-background-color: #ffffff; -fx-text-fill: #1f2937; -fx-font-size: 17px; -fx-font-weight: bold; -fx-background-radius: 18; -fx-border-color: #dbe2ea; -fx-border-radius: 18; -fx-border-width: 1.2; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 2);" text="Consultar Inventario" />
+                            </children>
+                        </VBox>
                         <!-- COLUMNA 3 -->
                         <VBox prefHeight="450.0" prefWidth="280.0" spacing="22.0">
                             <children>
