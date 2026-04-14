@@ -35,6 +35,8 @@ public class consultarInventarioController {
 
             lbl_resultado.setText(detalle);
 
+            //A
+
         } catch (Exception e) {
             lbl_resultado.setText("Error en datos");
         }
