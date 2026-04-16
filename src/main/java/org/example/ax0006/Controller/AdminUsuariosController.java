@@ -36,6 +36,7 @@ public class AdminUsuariosController {
         this.staffService = staffService;
     }
 
+    //elementos de la pantalla de administracion de usuarios:
     @FXML
     private Label fid_Bienvenido;
 
@@ -55,10 +56,7 @@ public class AdminUsuariosController {
     private TableColumn<Usuario, String> colNombreRol;
 
     @FXML
-    private TableColumn<Usuario, Void> colAccion;
-
-    @FXML
-    private TableColumn<Usuario, Void> colDirectorioStaff;
+    private TableColumn<Usuario, Void> colAccion; //columna para asignar rol
 
     @FXML
     private ComboBox<Object> comboConciertoFiltro;
@@ -78,7 +76,6 @@ public class AdminUsuariosController {
 
         cargarComboConciertoFiltro();
         agregarBoton();
-        agregarBotonDirectorioStaff();
 
         comboConciertoFiltro.setOnAction(e -> actualizarTabla());
 
@@ -118,6 +115,7 @@ public class AdminUsuariosController {
         });
     }
 
+    // Decide qué cargar según el filtro seleccionado
     private void actualizarTabla() {
         Object seleccionado = comboConciertoFiltro.getValue();
         if (seleccionado instanceof Concierto c) {
@@ -125,9 +123,9 @@ public class AdminUsuariosController {
         } else {
             cargarUsuariosSinAsignar();
         }
-        tablaUsuarios.refresh();
     }
 
+    // Usuarios que NO tienen ninguna asignación en RolConciertoUsuario
     private void cargarUsuariosSinAsignar() {
         List<Usuario> todos = rolService.obtenerUsuarios();
         List<Integer> asignados = staffService.obtenerIdsUsuariosAsignados();
@@ -137,11 +135,13 @@ public class AdminUsuariosController {
         tablaUsuarios.setItems(FXCollections.observableArrayList(sinAsignar));
     }
 
+    // Usuarios asignados a un concierto específico
     private void cargarUsuariosPorConcierto(Concierto concierto) {
         List<Usuario> usuarios = staffService.obtenerUsuariosPorConcierto(concierto.getIdConcierto());
         tablaUsuarios.setItems(FXCollections.observableArrayList(usuarios));
     }
 
+    // Obtiene el rol del usuario en el concierto actualmente filtrado
     private String obtenerRolEnConcierto(Usuario u) {
         Object seleccionado = comboConciertoFiltro.getValue();
         if (seleccionado instanceof Concierto c) {
@@ -153,7 +153,6 @@ public class AdminUsuariosController {
     private void agregarBoton() {
         colAccion.setCellFactory(param -> new TableCell<>() {
             private final Button btn = new Button("Asignar");
-
             {
                 btn.setOnAction(event -> {
                     Usuario u = getTableView().getItems().get(getIndex());
@@ -164,7 +163,7 @@ public class AdminUsuariosController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
+                if (empty) {
                     setGraphic(null);
                 } else {
                     btn.setDisable(false);
@@ -172,47 +171,6 @@ public class AdminUsuariosController {
                 }
             }
         });
-    }
-
-    private void agregarBotonDirectorioStaff() {
-        colDirectorioStaff.setCellFactory(param -> new TableCell<>() {
-            private final Button btn = new Button("Directorio Staff");
-
-            {
-                btn.setOnAction(event -> {
-                    Usuario u = getTableView().getItems().get(getIndex());
-                    abrirDirectorioStaff(u);
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
-                    setGraphic(null);
-                    return;
-                }
-
-                Usuario u = getTableView().getItems().get(getIndex());
-                Object seleccionado = comboConciertoFiltro.getValue();
-                String rol = obtenerRolEnConcierto(u);
-
-                if (seleccionado instanceof Concierto && rol != null && rol.equalsIgnoreCase("Staff")) {
-                    setGraphic(btn);
-                } else {
-                    setGraphic(null);
-                }
-            }
-        });
-    }
-
-    private void abrirDirectorioStaff(Usuario u) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Directorio Staff");
-        alert.setHeaderText("Directorio Staff");
-        alert.setContentText("Aquí se abrirá el directorio de subroles para: " + u.getNombre());
-        alert.showAndWait();
     }
 
     private void mostrarPopupRol(Usuario u) {
@@ -239,7 +197,6 @@ public class AdminUsuariosController {
                 else setText(item.getNombreConcierto());
             }
         });
-
         comboConciertos.setButtonCell(new ListCell<>() {
             @Override
             protected void updateItem(Concierto item, boolean empty) {

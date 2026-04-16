@@ -40,7 +40,6 @@ public class StaffService {
         nuevo.setNombre(nombre);
         nuevo.setContrasena(contrasena);
         nuevo.setGmail(gmail);
-        nuevo.setIdRol(4); // Staff
 
         usuarioRepository.guardar(nuevo);
         return true;
@@ -48,7 +47,7 @@ public class StaffService {
 
     public List<Usuario> listarEmpleados() {
         return usuarioRepository.obtenerUsuarios().stream()
-                .filter(u -> u.getIdRol() == 4)
+                .filter(u -> usuarioRepository.obtenerRolesDelUsuario(u.getIdUsuario()).contains("Staff"))
                 .collect(Collectors.toList());
     }
 
@@ -91,5 +90,13 @@ public class StaffService {
     // Retorna el nombre del rol del usuario en un concierto específico
     public String obtenerNombreRolEnConcierto(int idUsuario, int idConcierto) {
         return asignacionStaffRepository.obtenerNombreRolEnConcierto(idUsuario, idConcierto);
+    }
+
+    public boolean actualizarSubrolStaffEnConcierto(int idUsuario, int idConcierto, String subrol) {
+        return asignacionStaffRepository.actualizarSubrolStaffEnConcierto(idUsuario, idConcierto, subrol);
+    }
+
+    public String obtenerSubrolStaffEnConcierto(int idUsuario, int idConcierto) {
+        return asignacionStaffRepository.obtenerSubrolStaffEnConcierto(idUsuario, idConcierto);
     }
 }

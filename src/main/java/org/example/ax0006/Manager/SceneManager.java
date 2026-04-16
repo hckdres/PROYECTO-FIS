@@ -1,9 +1,18 @@
 package org.example.ax0006.Manager;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.example.ax0006.Controller.*;
+import org.example.ax0006.Repository.InventarioObjetoRepository;
+import org.example.ax0006.Repository.InventarioRepository;
+import org.example.ax0006.Repository.TipoObjetoRepository;
+import org.example.ax0006.Service.InventarioObjetoService;
+import org.example.ax0006.Service.InventarioService;
+import org.example.ax0006.Service.consultarInventarioService;
+import org.example.ax0006.Service.crearTipoObjetoService;
+import org.example.ax0006.db.H2;
 
 import java.io.IOException;
 
@@ -100,6 +109,16 @@ public class SceneManager {
         loadScene("/org/example/ax0006/menuconcierto.fxml", menuConciertoController);
     }
 
+    //Metodo para mostrar pantalla de directorio de staff
+    public void showDirectorioStaff() throws IOException{
+        DirectorioStaffController directorioStaffController = new DirectorioStaffController(
+                this,
+                context.getSesion(),
+                context.getConciertoService(),
+                context.getStaffService()
+        );
+        loadScene("/org/example/ax0006/directorioStaff.fxml", directorioStaffController);
+    }
 
     /*METODO PARA NO REPETIR ESTO COMO MIL VECES Y HACER QUE EL CAMBIO DE ESCENA SE VEA MAS LIMPIO*/
     private void loadScene(String fxml, Object controller) throws IOException {
@@ -114,5 +133,75 @@ public class SceneManager {
         stage.setScene(scene);
     }
 
+    public void showCrearInventario() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/ax0006/crearInventario.fxml"));
 
+        crearInventarioController controller =
+                new crearInventarioController(
+                        new InventarioService(new InventarioRepository(new H2())), this
+                );
+
+        loader.setController(controller);
+
+        Parent root = loader.load();
+        stage.getScene().setRoot(root);
+    }
+
+    public void showCrearTipoObjeto() throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/org/example/ax0006/crearTipoObjeto.fxml")
+        );
+
+        crearTipoObjetoController controller =
+                new crearTipoObjetoController(
+                        new crearTipoObjetoService(new TipoObjetoRepository(new H2())), this
+                );
+
+        loader.setController(controller);
+
+        Parent root = loader.load();
+
+        stage.getScene().setRoot(root);
+    }
+
+    public void showAsignarObjeto() throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/org/example/ax0006/asignarObjeto.fxml")
+        );
+
+        asignarObjetoController controller =
+                new asignarObjetoController(
+                        new InventarioObjetoService(
+                                new InventarioObjetoRepository(new H2())
+                        ), this
+                );
+
+        loader.setController(controller);
+
+        Parent root = loader.load();
+
+        stage.getScene().setRoot(root);
+    }
+
+    public void showConsultarInventario() throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/org/example/ax0006/consultarInventario.fxml")
+        );
+
+        consultarInventarioController controller =
+                new consultarInventarioController(
+                        new consultarInventarioService(
+                                new InventarioRepository(new H2())
+                        ), this
+                );
+
+        loader.setController(controller);
+
+        Parent root = loader.load();
+
+        stage.getScene().setRoot(root);
+    }
 }

@@ -30,8 +30,7 @@
                     <TableColumn fx:id="colNombre" text="Nombre" prefWidth="200"/>
                     <TableColumn fx:id="colGmail" text="Correo" prefWidth="300"/>
                     <TableColumn fx:id="colNombreRol" text="Rol en concierto" prefWidth="200"/>
-                    <TableColumn fx:id="colAccion" text="Asignar" prefWidth="150"/>
-                    <TableColumn fx:id="colDirectorioStaff" text="Directorio Staff" prefWidth="180"/>
+                    <TableColumn fx:id="colAccion" text="Asignar" prefWidth="200"/>
                 </columns>
             </TableView>
             <Button fx:id="fid_bt_volver" onAction="#On_volver" prefWidth="150" text="Volver al Menú" />

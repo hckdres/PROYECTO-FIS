@@ -32,13 +32,12 @@ public class UsuarioRepository {
 
     //INSERTA USUARIOS A LA BASE SE DATOS CON AYUDA DEL INSERT INTO A USUARIO:
     public boolean guardar(Usuario u) {
-        String sql = "INSERT INTO Usuario (nombre, contrasena, gmail, idRol) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Usuario (nombre, contrasena, gmail) VALUES (?, ?, ?)";
         try (Connection conn = h2.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, u.getNombre());
             stmt.setString(2, u.getContrasena());
             stmt.setString(3, u.getGmail());
-            stmt.setInt(4, u.getIdRol());
             stmt.executeUpdate();
             System.out.println("Usuario guardado en BD: " + u.getNombre());
             return true;
@@ -97,7 +96,6 @@ public class UsuarioRepository {
                 u.setIdUsuario(rs.getInt("idUsuario"));
                 u.setNombre(rs.getString("nombre"));
                 u.setGmail(rs.getString("gmail"));
-                u.setIdRol(rs.getInt("idRol"));
                 lista.add(u);
             }
         } catch (SQLException e) {

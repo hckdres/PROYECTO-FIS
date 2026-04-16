@@ -57,7 +57,7 @@ public class AsignacionStaffRepository {
     }
 
     public List<Usuario> obtenerStaffPorConcierto(int idConcierto) {
-        String sql = "SELECT u.idUsuario, u.nombre, u.contrasena, u.gmail, u.idRol " +
+        String sql = "SELECT u.idUsuario, u.nombre, u.contrasena, u.gmail " +
                 "FROM Usuario u " +
                 "JOIN RolConciertoUsuario rcu ON u.idUsuario = rcu.idUsuario " +
                 "WHERE rcu.idConcierto = ?";
@@ -74,7 +74,6 @@ public class AsignacionStaffRepository {
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setContrasena(rs.getString("contrasena"));
                 usuario.setGmail(rs.getString("gmail"));
-                usuario.setIdRol(rs.getInt("idRol"));
                 staff.add(usuario);
             }
         } catch (SQLException e) {
@@ -103,7 +102,7 @@ public class AsignacionStaffRepository {
     }
 
     public List<Usuario> obtenerUsuariosPorConcierto(int idConcierto) {
-        String sql = "SELECT u.idUsuario, u.nombre, u.contrasena, u.gmail, u.idRol " +
+        String sql = "SELECT u.idUsuario, u.nombre, u.contrasena, u.gmail " +
                 "FROM Usuario u " +
                 "JOIN RolConciertoUsuario rcu ON u.idUsuario = rcu.idUsuario " +
                 "WHERE rcu.idConcierto = ?";
@@ -120,7 +119,6 @@ public class AsignacionStaffRepository {
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setContrasena(rs.getString("contrasena"));
                 usuario.setGmail(rs.getString("gmail"));
-                usuario.setIdRol(rs.getInt("idRol"));
                 usuarios.add(usuario);
             }
         } catch (SQLException e) {
@@ -131,7 +129,7 @@ public class AsignacionStaffRepository {
     }
 
     public String obtenerNombreRolEnConcierto(int idUsuario, int idConcierto) {
-        String sql = "SELECT r.nombreRol " +
+        String sql = "SELECT r.rol " +
                 "FROM RolConciertoUsuario rcu " +
                 "JOIN Rol r ON rcu.idRol = r.idRol " +
                 "WHERE rcu.idUsuario = ? AND rcu.idConcierto = ?";
@@ -143,7 +141,53 @@ public class AsignacionStaffRepository {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getString("nombreRol");
+                return rs.getString("rol");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public boolean actualizarSubrolStaffEnConcierto(int idUsuario, int idConcierto, String subrol) {
+        String sql = """
+                UPDATE RolConciertoUsuario
+                SET subrol = ?
+                WHERE idUsuario = ?
+                  AND idConcierto = ?
+                  AND idRol = 4
+                """;
+
+        try (Connection conn = h2.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, subrol);
+            stmt.setInt(2, idUsuario);
+            stmt.setInt(3, idConcierto);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String obtenerSubrolStaffEnConcierto(int idUsuario, int idConcierto) {
+        String sql = """
+                SELECT subrol
+                FROM RolConciertoUsuario
+                WHERE idUsuario = ?
+                  AND idConcierto = ?
+                  AND idRol = 4
+                """;
+
+        try (Connection conn = h2.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUsuario);
+            stmt.setInt(2, idConcierto);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("subrol");
             }
         } catch (SQLException e) {
             e.printStackTrace();

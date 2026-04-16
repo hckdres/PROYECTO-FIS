@@ -15,6 +15,7 @@ public class H2 {
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
     }
+
     public void inicializarDB() {
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
 
@@ -147,12 +148,20 @@ public class H2 {
                     idRol INT,
                     idUsuario INT,
                     idConcierto INT,
+                    subrol VARCHAR(100),
                     PRIMARY KEY (idRol, idUsuario, idConcierto),
                     FOREIGN KEY (idRol) REFERENCES Rol(idRol),
                     FOREIGN KEY (idUsuario) REFERENCES Usuario(idUsuario),
                     FOREIGN KEY (idConcierto) REFERENCES Concierto(idConcierto)
                 )
             """);
+
+            // Por si la base ya existía sin la columna subrol
+            stmt.execute("""
+                ALTER TABLE RolConciertoUsuario
+                ADD COLUMN IF NOT EXISTS subrol VARCHAR(100)
+            """);
+
             //Crear roles con el idRol para eso toca mergear tablas para colocar los roles dentro de rol con los ids.
             //con merge into se evitan duplicados cada vez que se ejecute el programa.
             stmt.execute("""
@@ -183,4 +192,3 @@ public class H2 {
         }
     }
 }
-
