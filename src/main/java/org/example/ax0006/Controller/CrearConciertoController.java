@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.time.LocalTime;
 
 public class CrearConciertoController {
-    /*En esta pantalla se crean los concietos, pero queda pendendiente el analisis financiero y la implementacion mas compleja del horario*/
 
     private SesionManager sesion;
     private ConciertoService conciertoService;
@@ -26,11 +25,6 @@ public class CrearConciertoController {
         this.sesion = sesion;
         this.conciertoService = conciertoService;
         this.sceneManager = sceneManager;
-    }
-    
-    @FXML
-    public void initialize() {
-        idContrato = sesion.getIdContratoTemporal();
     }
 
     @FXML
@@ -51,8 +45,51 @@ public class CrearConciertoController {
     @FXML
     private TextField fid_aforo;
 
+    // =========================
+    // INIT
+    // =========================
     @FXML
-    /*Metodo en donde se crea el concierto, obteiendo los datos de los campos*/
+    public void initialize() {
+
+        // 🔹 recuperar contrato
+        idContrato = sesion.getIdContratoTemporal();
+
+        // 🔹 recuperar concierto temporal
+        Concierto temp = sesion.getConciertoTemporal();
+
+        if (temp != null) {
+
+            fid_nombreConcierto.setText(temp.getNombreConcierto());
+
+            if (temp.getAforo() != 0) {
+                fid_aforo.setText(String.valueOf(temp.getAforo()));
+            }
+
+            if (temp.getHorario() != null) {
+
+                if (temp.getHorario().getFechaInicio() != null) {
+                    fid_fecha_Inc.setValue(temp.getHorario().getFechaInicio());
+                }
+
+                if (temp.getHorario().getFechaFin() != null) {
+                    fid_fecha_Fin.setValue(temp.getHorario().getFechaFin());
+                }
+
+                if (temp.getHorario().getHoraInicio() != null) {
+                    fid_horaInicio.setText(temp.getHorario().getHoraInicio().toString());
+                }
+
+                if (temp.getHorario().getHoraFin() != null) {
+                    fid_horaFin.setText(temp.getHorario().getHoraFin().toString());
+                }
+            }
+        }
+    }
+
+    // =========================
+    // CREAR CONCIERTO
+    // =========================
+    @FXML
     void On_crearConcierto(ActionEvent event) {
 
         if (idContrato == null) {
@@ -61,27 +98,34 @@ public class CrearConciertoController {
         }
 
         try {
-            // Fecha
-            java.time.LocalDate fechaInc = fid_fecha_Inc.getValue();
-            java.time.LocalDate fechaFin = fid_fecha_Fin.getValue(); //CAMBIAR
-
-            //nombre del concierto
-
             String nombreConcierto = fid_nombreConcierto.getText();
-            // Horas
-            fid_horaInicio.setText(verifcarHora(fid_horaInicio.getText()));
 
-            LocalTime horaInicio = LocalTime.parse(fid_horaInicio.getText());
-            fid_horaFin.setText(verifcarHora(fid_horaFin.getText()));
-            LocalTime horaFin = LocalTime.parse(fid_horaFin.getText());
+            if (nombreConcierto == null || nombreConcierto.isEmpty()) {
+                alertaConcierto("Debe ingresar el nombre del concierto");
+                return;
+            }
 
-            // Aforo
+            if (fid_aforo.getText().isEmpty()) {
+                alertaConcierto("Debe ingresar el aforo");
+                return;
+            }
+
             int aforo = Integer.parseInt(fid_aforo.getText());
+
+            // Fechas
+            if (fid_fecha_Inc.getValue() == null || fid_fecha_Fin.getValue() == null) {
+                alertaConcierto("Debe seleccionar las fechas");
+                return;
+            }
+
+            // Horas
+            LocalTime horaInicio = LocalTime.parse(verifcarHora(fid_horaInicio.getText()));
+            LocalTime horaFin = LocalTime.parse(verifcarHora(fid_horaFin.getText()));
 
             // Horario
             Horario horario = new Horario();
-            horario.setFechaInicio(fechaInc);
-            horario.setFechaFin(fechaFin);
+            horario.setFechaInicio(fid_fecha_Inc.getValue());
+            horario.setFechaFin(fid_fecha_Fin.getValue());
             horario.setHoraInicio(horaInicio);
             horario.setHoraFin(horaFin);
 
@@ -91,79 +135,97 @@ public class CrearConciertoController {
             concierto.setHorario(horario);
             concierto.setAforo(aforo);
             concierto.setArtista(sesion.getUsuarioActual());
-            concierto.setProgramado(false); // importante
+            concierto.setProgramado(false);
             concierto.setIdContrato(idContrato);
 
-            /*Genera la pantalla de exito*/
             conciertoService.crearConcierto(concierto);
+
+            // limpiar temporales
+            sesion.setConciertoTemporal(null);
+            sesion.setIdContratoTemporal(null);
 
             exitoConcierto();
 
         } catch (Exception e) {
             e.printStackTrace();
-            /*Genera la pantalla de error*/
-            alertaConcierto("llene todos los campos con los formatos requeridos");
+            alertaConcierto("Revise los datos ingresados");
         }
     }
 
+    // =========================
+    // IR A CREAR CONTRATO
+    // =========================
     @FXML
     public void On_agregarContrato() {
 
-    Concierto temp = new Concierto();
+        Concierto temp = new Concierto();
 
-    temp.setNombreConcierto(fid_nombreConcierto.getText());
-    temp.setAforo(Integer.parseInt(fid_aforo.getText()));
+        temp.setNombreConcierto(fid_nombreConcierto.getText());
 
-    // Horario
-    Horario h = new Horario();
-    h.setFechaInicio(fid_fecha_Inc.getValue());
-    h.setFechaFin(fid_fecha_Fin.getValue());
+        // aforo seguro
+        if (!fid_aforo.getText().isEmpty()) {
+            temp.setAforo(Integer.parseInt(fid_aforo.getText()));
+        }
 
-    h.setHoraInicio(LocalTime.parse(fid_horaInicio.getText()));
-    h.setHoraFin(LocalTime.parse(fid_horaFin.getText()));
+        Horario h = new Horario();
+        h.setFechaInicio(fid_fecha_Inc.getValue());
+        h.setFechaFin(fid_fecha_Fin.getValue());
 
-    temp.setHorario(h);
+        // horas seguras
+        try {
+            if (!fid_horaInicio.getText().isEmpty()) {
+                h.setHoraInicio(LocalTime.parse(verifcarHora(fid_horaInicio.getText())));
+            }
+            if (!fid_horaFin.getText().isEmpty()) {
+                h.setHoraFin(LocalTime.parse(verifcarHora(fid_horaFin.getText())));
+            }
+        } catch (Exception e) {
+            // ignora si no están completas
+        }
 
-    // guardar temporalmente
-    sesion.setConciertoTemporal(temp);
+        temp.setHorario(h);
 
-    try {
-        sceneManager.showCrearContrato();
-    } catch (Exception e) {
-        e.printStackTrace();
+        // guardar en sesión
+        sesion.setConciertoTemporal(temp);
+
+        try {
+            sceneManager.showCrearContrato();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    }
 
+    // =========================
+    // VOLVER
+    // =========================
     @FXML
-    /*Boton para volver al menu*/
     void On_volver(ActionEvent event) throws IOException {
         sceneManager.showMenu();
     }
 
-
-    /*Metodo para mostrar una alerta cuando se llenan mal los datos*/
-    void alertaConcierto(String CausaError){
+    // =========================
+    // ALERTAS
+    // =========================
+    void alertaConcierto(String msg){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error al crear el concierto");
-        alert.setHeaderText("El concierto no se pudo crear");
-        alert.setContentText(CausaError);
-
-        alert.showAndWait(); // Esto abre el POP UP
+        alert.setTitle("Error");
+        alert.setHeaderText("No se pudo crear el concierto");
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 
-    /*METODO PARA HACER QUE SALGA UNA VENTANA DE EXIITO, CUANDO SE CREA el concierto CORRECTAMENTE*/
     void exitoConcierto () throws IOException {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("El concierto fue creado");
-        alert.setHeaderText("El la solicitud del concierto fue creada correctamente");
-        alert.setContentText("La solicitud sera revisada para que el concierto sea programado");
-        alert.showAndWait(); // Esto abre el POP UP
+        alert.setTitle("Éxito");
+        alert.setHeaderText("Concierto creado correctamente");
+        alert.setContentText("La solicitud será revisada");
+        alert.showAndWait();
         sceneManager.showMenuConcierto();
     }
 
     String verifcarHora(String hora){
-        if(hora.length() == 4){
-            hora = "0" + hora;
+        if (hora != null && hora.length() == 4){
+            return "0" + hora;
         }
         return hora;
     }
