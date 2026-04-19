@@ -43,8 +43,6 @@ public class ConciertoService {
         return conciertoRepo.obtenerConciertos();
     }
 
-
-
     /*El atributo del programado = true */
     public void aprobarConcierto(int idConcierto) {
         conciertoRepo.aprobarConcierto(idConcierto);
