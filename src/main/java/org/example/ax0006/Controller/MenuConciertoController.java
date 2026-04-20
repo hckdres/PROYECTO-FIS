@@ -80,24 +80,4 @@ public class MenuConciertoController {
             e.printStackTrace();
         }
     }
-
-     /* CREAR CONTRATO */
-    @FXML
-    void On_CrearContrato(ActionEvent event) {
-        try {
-            sceneManager.showCrearContrato();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-     /* CONSULTAR CONTRATO */
-    @FXML
-    void On_ConsultarContrato(ActionEvent event) {
-        try {
-            sceneManager.showConsultarContrato();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
