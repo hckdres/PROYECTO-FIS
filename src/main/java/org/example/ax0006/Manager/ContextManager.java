@@ -7,21 +7,20 @@ import org.example.ax0006.db.H2;
 public class ContextManager {
 
     private H2 h2;
+    private SesionManager sesion;
+
     private UsuarioRepository usuarioRepository;
     private RolRepository rolRepository;
+    private HorarioRepository horarioRepo;
+    private ConciertoRepository conciertoRepo;
+
     private AutenticacionService autenService;
     private ProfileService profileService;
     private RolService rolService;
-    private SesionManager sesion;
     private ConciertoService conciertoService;
-    private HorarioRepository horarioRepo;
-    private ConciertoRepository conciertoRepo;
     private StaffService staffService;
-
     private InventarioService inventarioService;
-    private CrearObjetoInventarioService CrearObjetoInventarioService;
-    private InventarioObjetoService inventarioObjetoService;
-    private consultarInventarioService consultarInventarioService;
+    private ObjetoService objetoService;
 
     public ContextManager(
             H2 h2,
@@ -36,9 +35,7 @@ public class ContextManager {
             SesionManager sesion,
             StaffService staffService,
             InventarioService inventarioService,
-            CrearObjetoInventarioService CrearObjetoInventarioService,
-            InventarioObjetoService inventarioObjetoService,
-            consultarInventarioService consultarInventarioService
+            ObjetoService objetoService
     ) {
         this.h2 = h2;
         this.usuarioRepository = usuarioRepository;
@@ -53,9 +50,7 @@ public class ContextManager {
         this.staffService = staffService;
 
         this.inventarioService = inventarioService;
-        this.CrearObjetoInventarioService = CrearObjetoInventarioService;
-        this.inventarioObjetoService = inventarioObjetoService;
-        this.consultarInventarioService = consultarInventarioService;
+        this.objetoService = objetoService;
     }
 
     public H2 getH2() {
@@ -98,15 +93,5 @@ public class ContextManager {
         return inventarioService;
     }
 
-    public CrearObjetoInventarioService getCrearTipoObjetoService() {
-        return CrearObjetoInventarioService;
-    }
-
-    public InventarioObjetoService getInventarioObjetoService() {
-        return inventarioObjetoService;
-    }
-
-    public consultarInventarioService getConsultarInventarioService() {
-        return consultarInventarioService;
-    }
+    public ObjetoService getObjetoService() {return objetoService;}
 }

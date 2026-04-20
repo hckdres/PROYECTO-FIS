@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import org.example.ax0006.Controller.*;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class SceneManager {
 
@@ -90,32 +91,11 @@ public class SceneManager {
         loadScene("/org/example/ax0006/menuconcierto.fxml", menuConciertoController);
     }
 
-    public void showCrearInventario() throws IOException {
+    /*Interfaces inventario*/
 
-        crearInventarioController controller = new crearInventarioController(
-                context.getInventarioService(),
-                context.getInventarioObjetoService(),
-                context.getCrearTipoObjetoService(),
-                this
-        );
-
-        loadScene("/org/example/ax0006/crearInventario.fxml", controller);
-    }
-
-    public void showCrearTipoObjeto() throws IOException {
-        CrearObjetoInventarioController controller = new CrearObjetoInventarioController(
-                context.getCrearTipoObjetoService(),
-                this
-        );
-        loadScene("/org/example/ax0006/crearTipoObjeto.fxml", controller);
-    }
-
-    public void showConsultarInventario() throws IOException {
-        consultarInventarioController controller = new consultarInventarioController(
-                context.getConsultarInventarioService(),
-                this
-        );
-        loadScene("/org/example/ax0006/consultarInventario.fxml", controller);
+    public void showGestionInventario() throws IOException{
+        GestionInventarioController gestionInventarioController = new GestionInventarioController(this, context.getSesion(), context.getInventarioService());
+        loadScene("/org/example/ax0006/gestioninventario.fxml", gestionInventarioController);
     }
 
     private void loadScene(String fxml, Object controller) throws IOException {

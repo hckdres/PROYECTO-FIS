@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="800.0" prefWidth="1200.0">
+
+    <top>
+        <HBox spacing="600" style="-fx-background-color: white; -fx-padding: 15;">
+            <children>
+                <Label text="Gestión de Inventarios"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+                <Button text="Volver" onAction="#On_volver"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="15" style="-fx-padding: 20;">
+            <children>
+
+                <TableView fx:id="tablaInventarios" prefHeight="500">
+                    <columns>
+                        <TableColumn fx:id="colNombre" text="Nombre"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="10">
+                    <children>
+                        <TextField fx:id="txtNombreInventario" promptText="Nombre inventario"/>
+                        <Button text="Crear" onAction="#On_crearInventario"/>
+                        <Button text="Eliminar" onAction="#On_eliminarInventario"/>
+                        <Button text="Gestionar" onAction="#On_gestionarInventario"/>
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>

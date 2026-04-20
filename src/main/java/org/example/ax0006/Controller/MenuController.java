@@ -96,16 +96,14 @@ public class MenuController {
 
     @FXML
     void on_bt_gestionDeInventario(ActionEvent event) throws IOException {
-        sceneManager.showCrearInventario();
+        sceneManager.showGestionInventario();
     }
 
     @FXML
     void on_bt_crearTipoObjeto(ActionEvent event) throws IOException {
-        sceneManager.showCrearTipoObjeto();
     }
 
     @FXML
     void on_bt_consultarInventario(ActionEvent event) throws IOException {
-        sceneManager.showConsultarInventario();
     }
 }

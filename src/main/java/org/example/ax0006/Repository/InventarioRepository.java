@@ -42,7 +42,7 @@ public class InventarioRepository {
     }
 
     // Listar inventarios
-    public List<Inventario> obtenerTodos() {
+    public List<Inventario> obtenerInventarios() {
 
         List<Inventario> lista = new ArrayList<>();
 

@@ -41,22 +41,20 @@ public class StartController extends Application {
         HorarioRepository horarioRepo = new HorarioRepository(h2);
         ConciertoRepository conciertoRepo = new ConciertoRepository(h2);
         AsignacionStaffRepository asignacionStaffRepo = new AsignacionStaffRepository(h2);
-
         InventarioRepository inventarioRepo = new InventarioRepository(h2);
+        ObjetoRepository objetoRepo = new ObjetoRepository(h2);
+        ModeloObjetoRepository modeloObjetoRepo = new ModeloObjetoRepository(h2);
         TipoObjetoRepository tipoObjetoRepo = new TipoObjetoRepository(h2);
-        InventarioObjetoRepository inventarioObjetoRepo = new InventarioObjetoRepository(h2);
+        ConciertoObjetoRepository conciertoObjetoRepo = new ConciertoObjetoRepository(h2);
 
         //SERVICIOS
-
         AutenticacionService autenService = new AutenticacionService(usuarioRepo);
         ProfileService profileService = new ProfileService(usuarioRepo);
         RolService rolService = new RolService(rolRepo, usuarioRepo);
         ConciertoService conciertoService = new ConciertoService(conciertoRepo, horarioRepo, conciertoValidator);
         StaffService staffService = new StaffService(usuarioRepo, asignacionStaffRepo);
-        InventarioService inventarioService = new InventarioService(inventarioRepo);
-        CrearObjetoInventarioService tipoObjetoService = new CrearObjetoInventarioService(tipoObjetoRepo);
-        InventarioObjetoService inventarioObjetoService = new InventarioObjetoService(inventarioObjetoRepo);
-        consultarInventarioService consultarInventarioService = new consultarInventarioService(inventarioRepo);
+        InventarioService inventarioService = new InventarioService(objetoRepo, conciertoObjetoRepo, inventarioRepo);
+        ObjetoService objetoService = new ObjetoService(tipoObjetoRepo, modeloObjetoRepo, objetoRepo);
 
         //MANAGERS
         SesionManager sesion = new SesionManager();
@@ -74,9 +72,7 @@ public class StartController extends Application {
                 sesion,
                 staffService,
                 inventarioService,
-                tipoObjetoService,
-                inventarioObjetoService,
-                consultarInventarioService
+                objetoService
         );
 
         SceneManager sceneManager = new SceneManager(stage, context);
