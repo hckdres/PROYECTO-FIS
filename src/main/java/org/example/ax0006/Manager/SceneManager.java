@@ -87,6 +87,14 @@ public class SceneManager {
     }
 
     public void showCrearConcierto() throws  IOException{
+// 🔥 SOLO limpiar si NO vienes de crear contrato
+        if (!"crearContrato".equals(context.getSesion().getPantallaOrigen())) {
+        context.getSesion().setIdContratoTemporal(null);
+        context.getSesion().setConciertoTemporal(null);
+        }
+    // 🔥 resetear origen
+    context.getSesion().setPantallaOrigen(null);
+
         CrearConciertoController crearConciertoController = new CrearConciertoController(context.getSesion(), context.getConciertoService(), this);
         loadScene("/org/example/ax0006/crearconcierto.fxml", crearConciertoController);
     }

@@ -17,7 +17,6 @@ public class CrearConciertoController {
     private SesionManager sesion;
     private ConciertoService conciertoService;
     private SceneManager sceneManager;
-    private Integer idContrato = null;
 
     public CrearConciertoController(SesionManager sesion, ConciertoService conciertoService, SceneManager sceneManager){
         this.sesion = sesion;
@@ -42,13 +41,15 @@ public class CrearConciertoController {
     @FXML
     public void initialize() {
 
-        // recuperar contrato
-        idContrato = sesion.getIdContratoTemporal();
+        Integer idContrato = sesion.getIdContratoTemporal();
 
-        // bloquear botón si ya hay contrato
+        // Si ya hay contrato, bloquear botón
         if (idContrato != null) {
             fid_bt_agregarContrato.setDisable(true);
             fid_bt_agregarContrato.setText("Contrato ya agregado");
+        } else {
+            fid_bt_agregarContrato.setDisable(false);
+            fid_bt_agregarContrato.setText("Agregar contrato");
         }
 
         // recuperar concierto temporal
@@ -88,6 +89,8 @@ public class CrearConciertoController {
     // =========================
     @FXML
     void On_crearConcierto(ActionEvent event) {
+
+        Integer idContrato = sesion.getIdContratoTemporal();
 
         if (idContrato == null) {
             alertaConcierto("Debe agregar un contrato antes de crear el concierto");
@@ -140,7 +143,7 @@ public class CrearConciertoController {
 
             conciertoService.crearConcierto(concierto);
 
-            // limpiar sesión
+            // 🔥 limpiar sesión al finalizar flujo
             sesion.setConciertoTemporal(null);
             sesion.setIdContratoTemporal(null);
 
@@ -158,11 +161,13 @@ public class CrearConciertoController {
     @FXML
     public void On_agregarContrato() {
 
-        // evitar múltiples contratos
-        if (idContrato != null) {
+        if (sesion.getIdContratoTemporal() != null) {
             alertaConcierto("Ya existe un contrato asociado a este concierto");
             return;
         }
+
+        // 🔥 INDICAR QUE VIENES DE CREAR CONCIERTO
+        sesion.setPantallaOrigen("crearContrato");
 
         Concierto temp = new Concierto();
 
@@ -184,7 +189,7 @@ public class CrearConciertoController {
                 h.setHoraFin(LocalTime.parse(verifcarHora(fid_horaFin.getText())));
             }
         } catch (Exception e) {
-            // evita que se rompa si el usuario escribe mal
+            // evita que falle si hay formato incorrecto
         }
 
         temp.setHorario(h);
@@ -199,11 +204,17 @@ public class CrearConciertoController {
         }
     }
 
+
     // =========================
     // VOLVER
     // =========================
     @FXML
     void On_volver(ActionEvent event) throws IOException {
+
+        // 🔥 limpiar sesión SOLO al salir del flujo
+        sesion.setConciertoTemporal(null);
+        sesion.setIdContratoTemporal(null);
+
         sceneManager.showMenu();
     }
 
