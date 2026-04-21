@@ -1,6 +1,9 @@
 package org.example.ax0006.Service;
 
+import org.example.ax0006.Entity.Objeto;
 import org.example.ax0006.Repository.*;
+
+import java.util.List;
 
 public class ObjetoService {
 
@@ -29,5 +32,13 @@ public class ObjetoService {
     // crear objeto físico
     public void crearObjeto(int idModelo, int idInventario, String estado, String obs) {
         objetoRepo.guardar(idModelo, idInventario, estado, obs, true);
+    }
+
+    public List<Objeto> obtenerObjetosInventario(int idInventario){
+        return objetoRepo.obtenerObjetosInventario(idInventario);
+    }
+
+    public void eliminarObjeto(int idObjeto){
+        objetoRepo.eliminar(idObjeto);
     }
 }

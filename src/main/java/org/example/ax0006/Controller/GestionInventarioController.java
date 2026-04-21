@@ -59,10 +59,11 @@ public class GestionInventarioController {
     }
 
     @FXML
-    void On_gestionarInventario(ActionEvent event) {
+    void On_gestionarInventario(ActionEvent event) throws IOException {
         Inventario inv = tablaInventarios.getSelectionModel().getSelectedItem();
         if (inv != null) {
-            //sceneManager.showInventarioDetalle(inv);
+            session.setInventarioSeleccionado(inv);
+            sceneManager.showInventarioDetalle();
         }
     }
 

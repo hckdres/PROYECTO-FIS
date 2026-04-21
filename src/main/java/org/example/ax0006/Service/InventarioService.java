@@ -1,6 +1,7 @@
 package org.example.ax0006.Service;
 
 import org.example.ax0006.Entity.Inventario;
+import org.example.ax0006.Entity.Objeto;
 import org.example.ax0006.Repository.ConciertoObjetoRepository;
 import org.example.ax0006.Repository.InventarioRepository;
 import org.example.ax0006.Repository.ObjetoRepository;
@@ -55,5 +56,9 @@ public class InventarioService {
 
     public List<Inventario> obtenerInventarios(){
         return inventarioRepo.obtenerInventarios();
+    }
+
+    public List<Objeto> obtenerObjetosInventario(int idInventario){
+        return objetoRepo.obtenerObjetosInventario(idInventario);
     }
 }

@@ -174,4 +174,72 @@ public class ObjetoRepository {
         }
     }
 
+    public List<Objeto> obtenerObjetosInventario(int idInventario) {
+
+        List<Objeto> objetos = new ArrayList<>();
+
+        String sql = """
+        SELECT o.*, 
+               m.nombre AS modeloNombre, 
+               t.nombre AS tipoNombre
+        FROM Objeto o
+        JOIN ModeloObjeto m ON o.idModelo = m.idModelo
+        JOIN TipoObjeto t ON m.idTipoObjeto = t.idTipoObjeto
+        WHERE o.idInventario = ?
+    """;
+
+        try (Connection conn = h2.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idInventario);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                Objeto obj = new Objeto();
+                obj.setIdObjeto(rs.getInt("idObjeto"));
+                obj.setEstado(rs.getString("estado"));
+                obj.setObservaciones(rs.getString("observaciones"));
+                obj.setDisponible(rs.getBoolean("disponible"));
+
+                // Modelo
+                ModeloObjeto modelo = new ModeloObjeto();
+                modelo.setIdModelo(rs.getInt("idModelo"));
+                modelo.setNombre(rs.getString("modeloNombre"));
+
+                // Tipo
+                TipoObjeto tipo = new TipoObjeto();
+                tipo.setIdTipoObjeto(rs.getInt("idTipoObjeto"));
+                tipo.setNombre(rs.getString("tipoNombre"));
+
+                modelo.setTipoObjeto(tipo);
+                obj.setModelo(modelo);
+
+                objetos.add(obj);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return objetos;
+    }
+
+
+    public void eliminar(int idObjeto) {
+
+        String sql = "DELETE FROM Objeto WHERE idOjeto = ?";
+
+        try (Connection conn = h2.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idObjeto);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="800" prefWidth="1200">
+
+    <top>
+        <HBox spacing="600" style="-fx-background-color: white; -fx-padding: 15;">
+            <children>
+                <Label text="Inventario"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+                <Button text="Volver" onAction="#On_volver"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="15" style="-fx-padding: 20;">
+            <children>
+
+                <TableView fx:id="tablaObjetos">
+                    <columns>
+                        <TableColumn fx:id="colModelo" text="Modelo"/>
+                        <TableColumn fx:id="colEstado" text="Estado"/>
+                        <TableColumn fx:id="colDisponible" text="Disponible"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="10">
+                    <children>
+                        <Button text="Agregar Objeto" onAction="#On_agregarObjeto"/>
+                        <Button text="Eliminar Objeto" onAction="#On_eliminarObjeto"/>
+                    </children>
+                </HBox>
+
+            </children>
+        </VBox>
+    </center>
+
+</BorderPane>
