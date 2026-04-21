@@ -3,6 +3,7 @@ package org.example.ax0006.Controller;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import org.example.ax0006.Entity.Inventario;
@@ -19,9 +20,19 @@ public class InventarioDetalleController {
 
     @FXML
     private TableView<Objeto> tablaObjetos;
-    @FXML private TableColumn<Objeto, String> colModelo;
-    @FXML private TableColumn<Objeto, String> colEstado;
-    @FXML private TableColumn<Objeto, Boolean> colDisponible;
+    @FXML
+    private TableColumn<Objeto, String> colModelo;
+    @FXML
+    private TableColumn<Objeto, String> colEstado;
+    @FXML
+    private TableColumn<Objeto, Boolean> colDisponible;
+    @FXML
+    private TableColumn<Objeto, String> colTipoObjeto;
+    @FXML
+    private TableColumn<Objeto, Integer> colID;
+
+    @FXML
+    private Label fid_InventarioNombre;
 
     private Inventario inventario;
     private InventarioService inventarioService;
@@ -29,19 +40,13 @@ public class InventarioDetalleController {
     private SceneManager sceneManager;
     private SesionManager session;
 
-    public InventarioDetalleController(SceneManager sceneManager, SesionManager session, InventarioService inventarioService, ObjetoService objetoService){
+    public InventarioDetalleController(SceneManager sceneManager, SesionManager session, InventarioService inventarioService, ObjetoService objetoService) {
         this.sceneManager = sceneManager;
         this.session = session;
         this.inventarioService = inventarioService;
         this.objetoService = objetoService;
     }
 
-    public void setInventario(Inventario inventario) {
-        this.inventario = session.getInventarioSeleccionado();
-        if (tablaObjetos != null) {
-            cargarObjetos();
-        }
-    }
 
     private void cargarObjetos() {
         tablaObjetos.getItems().setAll(
@@ -51,6 +56,18 @@ public class InventarioDetalleController {
 
     @FXML
     public void initialize() {
+        this.inventario = session.getInventarioSeleccionado();
+        fid_InventarioNombre.setText("Inventario: " + session.getInventarioSeleccionado().getNombre());
+
+        colID.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleIntegerProperty(
+                        data.getValue().getIdObjeto()
+                ).asObject());
+
+        colTipoObjeto.setCellValueFactory(data ->
+                new SimpleStringProperty(
+                        data.getValue().getModelo().getTipoObjeto().getNombre()
+                ));
 
         colModelo.setCellValueFactory(data ->
                 new SimpleStringProperty(
@@ -62,6 +79,8 @@ public class InventarioDetalleController {
 
         colDisponible.setCellValueFactory(data ->
                 new SimpleBooleanProperty(data.getValue().isDisponible()));
+
+        cargarObjetos();
     }
 
 

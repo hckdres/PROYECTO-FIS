@@ -22,16 +22,16 @@ public class ObjetoRepository {
         List<Objeto> lista = new ArrayList<>();
 
         String sql = """
-            SELECT o.idObjeto, o.estado, o.observaciones, o.disponible,
-                   m.idModelo, m.nombre AS modeloNombre,
-                   t.idTipoObjeto, t.nombre AS tipoNombre,
-                   i.idInventario, i.nombre AS inventarioNombre
-            FROM Objeto o
-            JOIN ModeloObjeto m ON o.idModelo = m.idModelo
-            JOIN TipoObjeto t ON m.idTipoObjeto = t.idTipoObjeto
-            JOIN Inventario i ON o.idInventario = i.idInventario
-            WHERE o.disponible = TRUE
-        """;
+                    SELECT o.idObjeto, o.estado, o.observaciones, o.disponible,
+                           m.idModelo, m.nombre AS modeloNombre,
+                           t.idTipoObjeto, t.nombre AS tipoNombre,
+                           i.idInventario, i.nombre AS inventarioNombre
+                    FROM Objeto o
+                    JOIN ModeloObjeto m ON o.idModelo = m.idModelo
+                    JOIN TipoObjeto t ON m.idTipoObjeto = t.idTipoObjeto
+                    JOIN Inventario i ON o.idInventario = i.idInventario
+                    WHERE o.disponible = TRUE
+                """;
 
         try (Connection conn = h2.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -81,16 +81,16 @@ public class ObjetoRepository {
         List<Objeto> lista = new ArrayList<>();
 
         String sql = """
-            SELECT o.idObjeto, o.estado, o.observaciones, o.disponible,
-                   m.idModelo, m.nombre AS modeloNombre,
-                   t.idTipoObjeto, t.nombre AS tipoNombre,
-                   i.idInventario, i.nombre AS inventarioNombre
-            FROM Objeto o
-            JOIN ModeloObjeto m ON o.idModelo = m.idModelo
-            JOIN TipoObjeto t ON m.idTipoObjeto = t.idTipoObjeto
-            JOIN Inventario i ON o.idInventario = i.idInventario
-            WHERE o.disponible = TRUE
-        """;
+                    SELECT o.idObjeto, o.estado, o.observaciones, o.disponible,
+                           m.idModelo, m.nombre AS modeloNombre,
+                           t.idTipoObjeto, t.nombre AS tipoNombre,
+                           i.idInventario, i.nombre AS inventarioNombre
+                    FROM Objeto o
+                    JOIN ModeloObjeto m ON o.idModelo = m.idModelo
+                    JOIN TipoObjeto t ON m.idTipoObjeto = t.idTipoObjeto
+                    JOIN Inventario i ON o.idInventario = i.idInventario
+                    WHERE o.disponible = TRUE
+                """;
 
         try (Connection conn = h2.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -154,9 +154,9 @@ public class ObjetoRepository {
     public void guardar(int idModelo, int idInventario, String estado, String obs, boolean disponible) {
 
         String sql = """
-        INSERT INTO Objeto (idModelo, idInventario, estado, observaciones, disponible)
-        VALUES (?, ?, ?, ?, ?)
-    """;
+                    INSERT INTO Objeto (idModelo, idInventario, estado, observaciones, disponible)
+                    VALUES (?, ?, ?, ?, ?)
+                """;
 
         try (Connection conn = h2.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -179,14 +179,21 @@ public class ObjetoRepository {
         List<Objeto> objetos = new ArrayList<>();
 
         String sql = """
-        SELECT o.*, 
-               m.nombre AS modeloNombre, 
-               t.nombre AS tipoNombre
-        FROM Objeto o
-        JOIN ModeloObjeto m ON o.idModelo = m.idModelo
-        JOIN TipoObjeto t ON m.idTipoObjeto = t.idTipoObjeto
-        WHERE o.idInventario = ?
-    """;
+                
+                                SELECT o.*,\s
+                       m.idModelo,
+                       m.nombre AS modeloNombre,\s
+                       t.idTipoObjeto,
+                       t.nombre AS tipoNombre,
+                       i.idInventario,
+                       i.nombre AS inventarioNombre,
+                       i.ubicacion
+                FROM Objeto o
+                JOIN ModeloObjeto m ON o.idModelo = m.idModelo
+                JOIN TipoObjeto t ON m.idTipoObjeto = t.idTipoObjeto
+                JOIN Inventario i ON o.idInventario = i.idInventario
+                WHERE o.idInventario = ?
+                """;
 
         try (Connection conn = h2.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -214,6 +221,14 @@ public class ObjetoRepository {
 
                 modelo.setTipoObjeto(tipo);
                 obj.setModelo(modelo);
+
+                // Inventario completo
+                Inventario inv = new Inventario();
+                inv.setIdInventario(rs.getInt("idInventario"));
+                inv.setNombre(rs.getString("inventarioNombre"));
+                inv.setUbicacion(rs.getString("ubicacion"));
+
+                obj.setInventario(inv);
 
                 objetos.add(obj);
             }
