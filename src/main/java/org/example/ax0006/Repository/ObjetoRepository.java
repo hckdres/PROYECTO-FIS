@@ -52,7 +52,8 @@ public class ObjetoRepository {
 
                 Inventario inv = new Inventario(
                         rs.getInt("idInventario"),
-                        rs.getString("inventarioNombre")
+                        rs.getString("inventarioNombre"),
+                        rs.getString("ubicacion")
                 );
 
                 Objeto o = new Objeto(
@@ -110,7 +111,8 @@ public class ObjetoRepository {
 
                 Inventario inv = new Inventario(
                         rs.getInt("idInventario"),
-                        rs.getString("inventarioNombre")
+                        rs.getString("inventarioNombre"),
+                        rs.getString("inventarioUbicacion")
                 );
 
                 Objeto o = new Objeto(

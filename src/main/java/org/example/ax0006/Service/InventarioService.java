@@ -19,6 +19,14 @@ public class InventarioService {
         this.inventarioRepo = inventarioRepo;
     }
 
+    public void crearInventario(String nombre, String ubicacion){
+        inventarioRepo.guardar(nombre, ubicacion);
+    }
+
+    public void eliminarInvertario(String nombre){
+        inventarioRepo.eliminar(nombre);
+    }
+
     public void asignarObjetoAConcierto(int idConcierto, int idObjeto) {
 
         /*

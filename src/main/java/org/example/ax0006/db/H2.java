@@ -79,7 +79,8 @@ public class H2 {
             stmt.execute("""
                     CREATE TABLE IF NOT EXISTS Inventario (
                         idInventario INT AUTO_INCREMENT PRIMARY KEY,
-                        nombre VARCHAR(255) NOT NULL
+                        nombre VARCHAR(255) NOT NULL,
+                        ubicacion VARCHAR(255) NOT NULL
                     );
                     """);
             stmt.execute("""

@@ -19,14 +19,15 @@ public class InventarioRepository {
     }
 
     // Crear inventario
-    public int guardar(String nombre) {
+    public int guardar(String nombre, String ubicacion) {
 
-        String sql = "INSERT INTO Inventario (nombre) VALUES (?)";
+        String sql = "INSERT INTO Inventario (nombre, ubicacion) VALUES (?, ?)";
 
         try (Connection conn = h2.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, nombre);
+            stmt.setString(2, ubicacion);
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
@@ -55,7 +56,8 @@ public class InventarioRepository {
             while (rs.next()) {
                 lista.add(new Inventario(
                         rs.getInt("idInventario"),
-                        rs.getString("nombre")
+                        rs.getString("nombre"),
+                        rs.getString("ubicacion")
                 ));
             }
 
@@ -80,7 +82,8 @@ public class InventarioRepository {
             if (rs.next()) {
                 return new Inventario(
                         rs.getInt("idInventario"),
-                        rs.getString("nombre")
+                        rs.getString("nombre"),
+                        rs.getString("ubicacion")
                 );
             }
 
@@ -143,14 +146,14 @@ public class InventarioRepository {
     }
 
     // Eliminar inventario
-    public void eliminar(int idInventario) {
+    public void eliminar(String nombre) {
 
-        String sql = "DELETE FROM Inventario WHERE idInventario = ?";
+        String sql = "DELETE FROM Inventario WHERE nombre = ?";
 
         try (Connection conn = h2.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, idInventario);
+            stmt.setString(1, nombre);
             stmt.executeUpdate();
 
         } catch (SQLException e) {

@@ -4,12 +4,14 @@ public class Inventario {
 
     private int idInventario;
     private String nombre;
+    private String ubicacion;
 
     public Inventario() {}
 
-    public Inventario(int idInventario, String nombre) {
+    public Inventario(int idInventario, String nombre, String ubicacion) {
         this.idInventario = idInventario;
         this.nombre = nombre;
+        this.ubicacion = ubicacion;
     }
 
     public int getIdInventario() {
@@ -26,5 +28,13 @@ public class Inventario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 }
