@@ -1,5 +1,6 @@
 package org.example.ax0006.Manager;
 
+import org.example.ax0006.Entity.Concierto;
 import org.example.ax0006.Entity.Usuario;
 import org.example.ax0006.Entity.Inventario;
 
@@ -9,7 +10,7 @@ public class SesionManager {
 
     /*ATRIBUTO*/
     private Usuario usuarioActual;
-
+    private Concierto conciertoTemporal;
     private Inventario inventarioSeleccionado;
 
     /*METODO PARA OBTENER EL USUARIO ACTUALMENTE LOGEADO EN EL PROGRAMA, SI NADIE SE HA LOGEADO PUES ESTE ESTA EN NULL*/
@@ -26,6 +27,35 @@ public class SesionManager {
     public void cerrarSesion() {
         this.usuarioActual = null;
     }
+
+   private Integer idContratoTemporal;
+
+   public void setConciertoTemporal(Concierto conciertoTemporal) {
+    this.conciertoTemporal = conciertoTemporal;
+}
+
+    public Concierto getConciertoTemporal() {
+        return conciertoTemporal;
+    }
+
+    public void setIdContratoTemporal(Integer idContratoTemporal) {
+        this.idContratoTemporal = idContratoTemporal;
+    }
+
+    public Integer getIdContratoTemporal() {
+        return idContratoTemporal;
+    }
+
+    private String pantallaOrigen;
+
+    public void setPantallaOrigen(String pantallaOrigen) {
+        this.pantallaOrigen = pantallaOrigen;
+    }
+
+    public String getPantallaOrigen() {
+        return pantallaOrigen;
+    }
+
 
     public Inventario getInventarioSeleccionado() {
         return inventarioSeleccionado;

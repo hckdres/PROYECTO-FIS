@@ -7,6 +7,7 @@ import org.example.ax0006.Manager.ContextManager;
 import org.example.ax0006.Manager.SesionManager;
 import org.example.ax0006.Repository.*;
 import org.example.ax0006.Service.AutenticacionService;
+import org.example.ax0006.Repository.*;
 import org.example.ax0006.Service.*;
 import org.example.ax0006.Manager.SceneManager;
 import org.example.ax0006.Service.ConciertoService;
@@ -46,12 +47,14 @@ public class StartController extends Application {
         ModeloObjetoRepository modeloObjetoRepo = new ModeloObjetoRepository(h2);
         TipoObjetoRepository tipoObjetoRepo = new TipoObjetoRepository(h2);
         ConciertoObjetoRepository conciertoObjetoRepo = new ConciertoObjetoRepository(h2);
+        ContratoRepository contratoRepo = new ContratoRepository(h2);
 
-        //SERVICIOS
+        // SERVICIOS
         AutenticacionService autenService = new AutenticacionService(usuarioRepo);
         ProfileService profileService = new ProfileService(usuarioRepo);
         RolService rolService = new RolService(rolRepo, usuarioRepo);
-        ConciertoService conciertoService = new ConciertoService(conciertoRepo, horarioRepo, conciertoValidator);
+        ContratoService contratoService = new ContratoService(contratoRepo);
+        ConciertoService conciertoService = new ConciertoService(conciertoRepo, horarioRepo, conciertoValidator, contratoService);
         StaffService staffService = new StaffService(usuarioRepo, asignacionStaffRepo);
         InventarioService inventarioService = new InventarioService(objetoRepo, conciertoObjetoRepo, inventarioRepo);
         ObjetoService objetoService = new ObjetoService(tipoObjetoRepo, modeloObjetoRepo, objetoRepo);
@@ -72,8 +75,10 @@ public class StartController extends Application {
                 sesion,
                 staffService,
                 inventarioService,
-                objetoService
+                objetoService,
+                contratoService
         );
+
 
         SceneManager sceneManager = new SceneManager(stage, context);
 
@@ -96,4 +101,6 @@ public class StartController extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+
 }

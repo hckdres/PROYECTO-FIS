@@ -1,19 +1,25 @@
 package org.example.ax0006.Manager;
 
-import org.example.ax0006.Repository.*;
+import org.example.ax0006.Repository.ConciertoRepository;
+import org.example.ax0006.Repository.ContratoRepository;
+import org.example.ax0006.Repository.HorarioRepository;
+import org.example.ax0006.Repository.RolRepository;
+import org.example.ax0006.Repository.UsuarioRepository;
 import org.example.ax0006.Service.*;
+import org.example.ax0006.Service.AutenticacionService;
+import org.example.ax0006.Service.ConciertoService;
+import org.example.ax0006.Service.ProfileService;
+import org.example.ax0006.Service.RolService;
 import org.example.ax0006.db.H2;
 
 public class ContextManager {
 
     private H2 h2;
     private SesionManager sesion;
-
     private UsuarioRepository usuarioRepository;
     private RolRepository rolRepository;
     private HorarioRepository horarioRepo;
     private ConciertoRepository conciertoRepo;
-
     private AutenticacionService autenService;
     private ProfileService profileService;
     private RolService rolService;
@@ -21,6 +27,8 @@ public class ContextManager {
     private StaffService staffService;
     private InventarioService inventarioService;
     private ObjetoService objetoService;
+    private ContratoService contratoService;
+    private ContratoRepository contratoRepo;
 
     public ContextManager(
             H2 h2,
@@ -35,7 +43,9 @@ public class ContextManager {
             SesionManager sesion,
             StaffService staffService,
             InventarioService inventarioService,
-            ObjetoService objetoService
+            ObjetoService objetoService,
+            ContratoService contratoService,
+            ContratoRepository contratoRepo
     ) {
         this.h2 = h2;
         this.usuarioRepository = usuarioRepository;
@@ -48,9 +58,10 @@ public class ContextManager {
         this.rolService = rolService;
         this.sesion = sesion;
         this.staffService = staffService;
-
         this.inventarioService = inventarioService;
         this.objetoService = objetoService;
+        this.contratoService = contratoService;
+        this.contratoRepo = contratoRepo;
     }
 
     public H2 getH2() {
@@ -94,4 +105,8 @@ public class ContextManager {
     }
 
     public ObjetoService getObjetoService() {return objetoService;}
+
+    public ContratoService getContratoService() { return contratoService; }
+    public ContratoRepository getContratoRepository() { return contratoRepo; }
 }
+
