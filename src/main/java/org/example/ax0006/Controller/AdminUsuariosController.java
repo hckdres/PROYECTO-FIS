@@ -1,5 +1,4 @@
 package org.example.ax0006.Controller;
-
 import java.util.Optional;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.*;
@@ -8,6 +7,7 @@ import org.example.ax0006.Manager.SceneManager;
 import org.example.ax0006.Service.ConciertoService;
 import org.example.ax0006.Service.RolService;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.ax0006.Entity.Usuario;
@@ -15,6 +15,12 @@ import org.example.ax0006.Manager.SesionManager;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import org.example.ax0006.Entity.Rol;
+import org.example.ax0006.Repository.RolRepository;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.example.ax0006.Service.StaffService;
 
@@ -28,13 +34,14 @@ public class AdminUsuariosController {
     private ConciertoService conciertoService;
     private StaffService staffService;
 
-    public AdminUsuariosController(SesionManager sesion, RolService rolService, SceneManager sceneManager, ConciertoService conciertoService, StaffService staffService) {
+    public AdminUsuariosController(SesionManager sesion, RolService rolService, SceneManager sceneManager,ConciertoService conciertoService, StaffService staffService) {
         this.sesion = sesion;
         this.rolService = rolService;
         this.sceneManager = sceneManager;
         this.conciertoService = conciertoService;
         this.staffService = staffService;
     }
+
 
     //elementos de la pantalla de administracion de usuarios:
     @FXML
@@ -52,6 +59,10 @@ public class AdminUsuariosController {
     @FXML
     private TableColumn<Usuario, String> colGmail;
 
+
+
+
+
     @FXML
     private TableColumn<Usuario, String> colNombreRol;
 
@@ -60,6 +71,11 @@ public class AdminUsuariosController {
 
     @FXML
     private ComboBox<Object> comboConciertoFiltro;
+
+
+
+
+
 
     @FXML
     public void initialize() {
@@ -80,7 +96,9 @@ public class AdminUsuariosController {
         comboConciertoFiltro.setOnAction(e -> actualizarTabla());
 
         cargarUsuariosSinAsignar();
+
     }
+
 
     private void cargarComboConciertoFiltro() {
         comboConciertoFiltro.getItems().clear();
@@ -92,13 +110,14 @@ public class AdminUsuariosController {
         );
         comboConciertoFiltro.setValue("Sin asignar");
 
+
         comboConciertoFiltro.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Object item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) setText(null);
                 else if (item instanceof Concierto c)
-                    setText(c.getNombreConcierto());
+                            setText(c.getNombreConcierto());
                 else setText(item.toString());
             }
         });
@@ -166,7 +185,7 @@ public class AdminUsuariosController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    btn.setDisable(false);
+                    btn.setDisable(false);//pequeño cambio para que el boton estuviera disponible siempre para asignar mas roles asi ya tenga
                     setGraphic(btn);
                 }
             }
@@ -175,7 +194,6 @@ public class AdminUsuariosController {
 
     private void mostrarPopupRol(Usuario u) {
         List<Rol> roles = rolService.obtenerRolesAsignables();
-        List<Concierto> conciertos = conciertoService.obtenerConciertosSolos();
 
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Asignar Rol");
@@ -185,32 +203,40 @@ public class AdminUsuariosController {
         comboRoles.getItems().addAll(roles);
         comboRoles.setPromptText("Seleccionar rol");
 
-        ComboBox<Concierto> comboConciertos = new ComboBox<>();
-        comboConciertos.getItems().addAll(conciertos);
-        comboConciertos.setPromptText("Seleccionar concierto");
-
-        comboConciertos.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(Concierto item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) setText(null);
-                else setText(item.getNombreConcierto());
-            }
-        });
-        comboConciertos.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Concierto item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) setText(null);
-                else setText(item.getNombreConcierto());
-            }
-        });
-
         VBox content = new VBox(10);
-        content.getChildren().addAll(
-                new Label("Rol:"), comboRoles,
-                new Label("Concierto:"), comboConciertos
-        );
+        content.getChildren().addAll(new Label("Rol:"), comboRoles);
+
+
+        Object seleccionado = comboConciertoFiltro.getValue();
+        boolean tieneConcierto = seleccionado instanceof Concierto;
+
+        ComboBox<Concierto> comboConciertos = new ComboBox<>();
+
+        if (!tieneConcierto) {
+            List<Concierto> conciertos = conciertoService.obtenerConciertosSolos();
+            comboConciertos.getItems().addAll(conciertos);
+            comboConciertos.setPromptText("Seleccionar concierto");
+
+            comboConciertos.setCellFactory(lv -> new ListCell<>() {
+                @Override
+                protected void updateItem(Concierto item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) setText(null);
+                    else setText(item.getNombreConcierto());
+                }
+            });
+            comboConciertos.setButtonCell(new ListCell<>() {
+                @Override
+                protected void updateItem(Concierto item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) setText(null);
+                    else setText(item.getNombreConcierto());
+                }
+            });
+
+            content.getChildren().addAll(new Label("Concierto:"), comboConciertos);
+        }
+
         dialog.getDialogPane().setContent(content);
 
         ButtonType confirmar = new ButtonType("Confirmar", ButtonBar.ButtonData.OK_DONE);
@@ -220,21 +246,39 @@ public class AdminUsuariosController {
         Optional<ButtonType> resultado = dialog.showAndWait();
         if (resultado.isPresent() && resultado.get() == confirmar) {
             Rol rolSeleccionado = comboRoles.getValue();
-            Concierto conciertoSeleccionado = comboConciertos.getValue();
 
-            if (rolSeleccionado == null || conciertoSeleccionado == null) {
+            if (rolSeleccionado == null) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Campos vacíos");
-                alert.setHeaderText("Selecciona un rol y un concierto");
+                alert.setHeaderText("Selecciona un rol");
                 alert.showAndWait();
                 return;
             }
 
-            staffService.asignarStaffAConcierto(
-                    u.getIdUsuario(),
-                    conciertoSeleccionado.getIdConcierto(),
-                    rolSeleccionado.getIdRol()
-            );
+            if (tieneConcierto) {
+                // Usar el concierto del filtro directamente
+                Concierto conciertoFiltro = (Concierto) seleccionado;
+                staffService.asignarStaffAConcierto(
+                        u.getIdUsuario(),
+                        conciertoFiltro.getIdConcierto(),
+                        rolSeleccionado.getIdRol()
+                );
+            } else {
+
+                Concierto conciertoSeleccionado = comboConciertos.getValue();
+                if (conciertoSeleccionado == null) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Campos vacíos");
+                    alert.setHeaderText("Selecciona un concierto");
+                    alert.showAndWait();
+                    return;
+                }
+                staffService.asignarStaffAConcierto(
+                        u.getIdUsuario(),
+                        conciertoSeleccionado.getIdConcierto(),
+                        rolSeleccionado.getIdRol()
+                );
+            }
             actualizarTabla();
         }
     }
@@ -244,3 +288,9 @@ public class AdminUsuariosController {
         sceneManager.showMenu();
     }
 }
+
+
+
+
+
+
