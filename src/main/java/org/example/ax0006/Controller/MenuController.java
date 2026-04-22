@@ -47,10 +47,6 @@ public class MenuController {
     @FXML
     private Button fid_Menu_Conciertos;
 
-    @FXML private Button bt_crearInventario;
-    @FXML private Button bt_crearTipoObjeto;
-    @FXML private Button bt_consultarInventario;
-
     @FXML
     public void initialize() {
         if (sesion != null && sesion.getUsuarioActual() != null && fid_Bienvenido != null) {
@@ -95,17 +91,9 @@ public class MenuController {
     }
 
     @FXML
-    void on_bt_crearInventario(ActionEvent event) throws IOException {
-        sceneManager.showCrearInventario();
+    void on_bt_crearObjeto(ActionEvent event) throws IOException {
+        sceneManager.showCrearObjeto();
     }
 
-    @FXML
-    void on_bt_crearTipoObjeto(ActionEvent event) throws IOException {
-        sceneManager.showCrearTipoObjeto();
-    }
 
-    @FXML
-    void on_bt_consultarInventario(ActionEvent event) throws IOException {
-        sceneManager.showConsultarInventario();
-    }
 }

@@ -1,10 +1,6 @@
 package org.example.ax0006.Manager;
 
-import org.example.ax0006.Repository.ConciertoRepository;
-import org.example.ax0006.Repository.ContratoRepository;
-import org.example.ax0006.Repository.HorarioRepository;
-import org.example.ax0006.Repository.RolRepository;
-import org.example.ax0006.Repository.UsuarioRepository;
+import org.example.ax0006.Repository.*;
 import org.example.ax0006.Service.*;
 import org.example.ax0006.db.H2;
 
@@ -23,9 +19,8 @@ public class ContextManager {
     private StaffService staffService;
 
     private InventarioService inventarioService;
-    private crearTipoObjetoService crearTipoObjetoService;
     private InventarioObjetoService inventarioObjetoService;
-    private consultarInventarioService consultarInventarioService;
+    private ObjetoService objetoService;
     private ContratoService contratoService;
     private ContratoRepository contratoRepo;
 
@@ -42,10 +37,8 @@ public class ContextManager {
             SesionManager sesion,
             StaffService staffService,
             InventarioService inventarioService,
-            crearTipoObjetoService crearTipoObjetoService,
             InventarioObjetoService inventarioObjetoService,
-            consultarInventarioService consultarInventarioService,
-            StaffService service, ConciertoRepository conciertoRepoExtra,
+            ObjetoService objetoService,
             ContratoService contratoService,
             ContratoRepository contratoRepo
     ) {
@@ -60,37 +53,16 @@ public class ContextManager {
         this.rolService = rolService;
         this.sesion = sesion;
         this.staffService = staffService;
-
         this.inventarioService = inventarioService;
-        this.crearTipoObjetoService = crearTipoObjetoService;
         this.inventarioObjetoService = inventarioObjetoService;
-        this.consultarInventarioService = consultarInventarioService;
+        this.objetoService = objetoService;
+        this.contratoService = contratoService;
+        this.contratoRepo = contratoRepo;
     }
 
-
-//
-//    public ProfileService getProfileService() {
-//        return profileService;
-//        this.contratoService = contratoService;
-//        this.contratoRepo = contratoRepo;
-//    }
-
-
-    public InventarioService getInventarioService() {
-        return inventarioService;
-    }
-
-    public crearTipoObjetoService getCrearTipoObjetoService() {
-        return crearTipoObjetoService;
-    }
-
-    public InventarioObjetoService getInventarioObjetoService() {
-        return inventarioObjetoService;
-    }
-
-    public consultarInventarioService getConsultarInventarioService() {
-        return consultarInventarioService;
-    }
+    public InventarioService getInventarioService() { return inventarioService; }
+    public InventarioObjetoService getInventarioObjetoService() { return inventarioObjetoService; }
+    public ObjetoService getObjetoService() { return objetoService; }
     public H2 getH2() { return h2; }
     public UsuarioRepository getUsuarioRepository() { return usuarioRepository; }
     public RolRepository getRolRepository() { return rolRepository; }

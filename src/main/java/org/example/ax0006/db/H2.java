@@ -79,6 +79,24 @@ public class H2 {
                     tipo VARCHAR(255) NOT NULL
                 )
             """);
+//            stmt.execute("""
+//                INSERT INTO TipoObjeto (tipo) VALUES
+//                ('Micrófono'),
+//                ('Parlante'),
+//                ('Cable XLR'),
+//                ('Cable de poder'),
+//                ('Consola de mezcla'),
+//                ('Amplificador'),
+//                ('Monitor de escenario'),
+//                ('Pantalla LED'),
+//                ('Proyector'),
+//                ('Soporte de micrófono'),
+//                ('Rack de audio'),
+//                ('Interfaz de audio'),
+//                ('Sistema in-ear'),
+//                ('Luces LED'),
+//                ('Generador eléctrico');
+//            """);
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS ReferenciaDeObjeto (
                     idReferenciaObjeto INT AUTO_INCREMENT PRIMARY KEY,
@@ -88,8 +106,10 @@ public class H2 {
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS Objeto (
                     idObjeto INT AUTO_INCREMENT PRIMARY KEY,
+                    idTipoObjeto INT NOT NULL,
+                    idReferenciaObjeto INT NOT NULL,
                     FOREIGN KEY (idTipoObjeto) REFERENCES TipoObjeto(idTipoObjeto),
-                    FOREING KEY (idReferenciaObjeto) REFERENCES Referencia(idReferenciaObjeto)
+                    FOREIGN KEY (idReferenciaObjeto) REFERENCES ReferenciaDeObjeto(idReferenciaObjeto)
                 )
             """);
             stmt.execute("""
@@ -97,18 +117,7 @@ public class H2 {
                     idDocumentoInventario INT AUTO_INCREMENT PRIMARY KEY
                 )
             """);
-            stmt.execute("""
-            DROP TABLE ObjetoInventario;
-            """);
-            stmt.execute("""
-            DROP TABLE Inventario;
-            """);
-            stmt.execute("""
-            DROP TABLE InventarioHorario;
-            """);
-            stmt.execute("""
-            DROP TABLE ConciertoInventario;
-            """);
+
             stmt.execute("""
                 CREATE TABLE IF NOT EXISTS ObjetoDocumentoInventario (
                     idInventario INT,

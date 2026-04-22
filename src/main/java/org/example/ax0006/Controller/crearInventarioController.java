@@ -1,162 +1,103 @@
 package org.example.ax0006.Controller;
 
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import org.example.ax0006.Entity.Horario;
-import org.example.ax0006.Entity.TipoObjeto;
+import org.example.ax0006.Entity.Concierto;
 import org.example.ax0006.Manager.SceneManager;
+import org.example.ax0006.Manager.SesionManager;
 import org.example.ax0006.Service.InventarioService;
-import org.example.ax0006.Service.InventarioObjetoService;
-import org.example.ax0006.Service.crearTipoObjetoService;
+import org.example.ax0006.Service.ObjetoService;
 
-import java.io.IOException;
-import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class crearInventarioController {
+    private final InventarioService inventarioService;
+    private final ObjetoService objetoService; // Necesitas este servicio
+    private final SceneManager sceneManager;
+    private final SesionManager sesionManager;
 
     @FXML private DatePicker dp_fechaInicio;
     @FXML private DatePicker dp_fechaFin;
     @FXML private TextField tf_horaInicio;
     @FXML private TextField tf_horaFin;
-    @FXML private VBox contenedorObjetos;
-    @FXML private Label lbl_msg;
+    @FXML private TextField tf_idConcierto;
+    @FXML private ComboBox<String> cb_objetos;
+    @FXML private ListView<String> lv_objetos_seleccionados;
 
-    private InventarioService inventarioService;
-    private InventarioObjetoService inventarioObjetoService;
-    private crearTipoObjetoService tipoObjetoService;
-    private SceneManager sceneManager;
+    private ObservableList<String> listaVisualObjetos = FXCollections.observableArrayList();
+    private List<Integer> listaIdsParaGuardar = new ArrayList<>();
 
-    private List<ComboBox<TipoObjeto>> combos = new ArrayList<>();
-    private List<TipoObjeto> todosLosObjetos;
-
-    private boolean confirmacion = false;
-
-    public crearInventarioController(
-            InventarioService inventarioService,
-            InventarioObjetoService inventarioObjetoService,
-            crearTipoObjetoService tipoObjetoService,
-            SceneManager sceneManager
-    ) {
+    public crearInventarioController(InventarioService inventarioService, ObjetoService objetoService, SceneManager sceneManager, SesionManager sesionManager) {
         this.inventarioService = inventarioService;
-        this.inventarioObjetoService = inventarioObjetoService;
-        this.tipoObjetoService = tipoObjetoService;
+        this.objetoService = objetoService;
         this.sceneManager = sceneManager;
+        this.sesionManager = sesionManager;
     }
 
     @FXML
     public void initialize() {
-        todosLosObjetos = tipoObjetoService.obtenerTodos();
-        agregarNuevoCombo();
-    }
-
-    @FXML
-    void on_bt_agregarObjeto(ActionEvent event) {
-        agregarNuevoCombo();
-    }
-
-    private void agregarNuevoCombo() {
-        ComboBox<TipoObjeto> combo = new ComboBox<>();
-        combo.getItems().addAll(todosLosObjetos);
-        combos.add(combo);
-        contenedorObjetos.getChildren().add(combo);
-    }
-
-    @FXML
-    void on_bt_crear(ActionEvent event) {
-
-        if (!confirmacion) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmación");
-            alert.setHeaderText(null);
-            alert.setContentText("¿Confirmar envío? Presiona nuevamente 'Crear' para continuar.");
-            alert.showAndWait();
-            confirmacion = true;
-            return;
+        Concierto c = sesionManager.getConciertoTemporal();
+        if (c != null) {
+            tf_idConcierto.setText(String.valueOf(c.getIdConcierto()));
+            if (c.getHorario() != null) {
+                dp_fechaInicio.setValue(c.getHorario().getFechaInicio());
+                dp_fechaFin.setValue(c.getHorario().getFechaFin());
+                tf_horaInicio.setText(c.getHorario().getHoraInicio().toString());
+                tf_horaFin.setText(c.getHorario().getHoraFin().toString());
+            }
         }
 
+        List<String> objetosDB = objetoService.obtenerListaObjetosFormateada();
+        cb_objetos.setItems(FXCollections.observableArrayList(objetosDB));
+        lv_objetos_seleccionados.setItems(listaVisualObjetos);
+    }
+
+    @FXML
+    void on_bt_agregar_lista() {
+        String seleccionado = cb_objetos.getSelectionModel().getSelectedItem();
+        if (seleccionado != null && !listaVisualObjetos.contains(seleccionado)) {
+            listaVisualObjetos.add(seleccionado);
+            // Extraer el ID (asumiendo formato "ID - Nombre")
+            int id = Integer.parseInt(seleccionado.split(" - ")[0]);
+            listaIdsParaGuardar.add(id);
+        }
+    }
+
+    @FXML
+    void on_bt_quitar_lista() {
+        int index = lv_objetos_seleccionados.getSelectionModel().getSelectedIndex();
+        if (index >= 0) {
+            listaVisualObjetos.remove(index);
+            listaIdsParaGuardar.remove(index);
+        }
+    }
+
+    @FXML
+    void on_bt_crear() {
         try {
+            Concierto c = sesionManager.getConciertoTemporal();
+            int idConcierto = Integer.parseInt(tf_idConcierto.getText());
+            int idHorario = (c != null && c.getHorario() != null) ? c.getHorario().getIdHorario() : 0;
 
-            Horario horario = new Horario();
-            horario.setFechaInicio(dp_fechaInicio.getValue());
-            horario.setFechaFin(dp_fechaFin.getValue());
-            horario.setHoraInicio(LocalTime.parse(tf_horaInicio.getText()));
-            horario.setHoraFin(LocalTime.parse(tf_horaFin.getText()));
+            inventarioService.crearDocumentoInventario(idConcierto, idHorario, listaIdsParaGuardar);
 
-            Set<Integer> usados = new HashSet<>();
-            List<String> nombresConflictos = new ArrayList<>();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Inventario creado y objetos vinculados exitosamente.");
+            alert.showAndWait();
 
-
-            for (ComboBox<TipoObjeto> cb : combos) {
-                TipoObjeto obj = cb.getValue();
-                if (obj == null) continue;
-
-                if (!usados.add(obj.getIdTipoObjeto())) {
-                    lbl_msg.setText("Error: No puedes repetir el objeto '" + obj.getNombre() + "'");
-                    confirmacion = false;
-                    return;
-                }
-
-                boolean enUso = inventarioObjetoService.objetoEnUsoEnRango(
-                        obj.getIdTipoObjeto(),
-                        horario
-                );
-
-                if (enUso) {
-                    nombresConflictos.add(obj.getNombre());
-                }
-            }
-
-            if (!nombresConflictos.isEmpty()) {
-                String msg = "Conflicto de horario en:\n- " + String.join("\n- ", nombresConflictos);
-                lbl_msg.setText(msg);
-
-                confirmacion = false;
-                return;
-            }
-
-            int inventarioId = inventarioService.crearInventario(horario);
-            
-            if (inventarioService.existeHorario(horario)) {
-                lbl_msg.setText("Error: El horario ya existe o es inválido.");
-                confirmacion = false;
-                return;
-            }
-
-            if (inventarioId == -1) {
-                lbl_msg.setText("Error: El horario ya existe o es inválido.");
-                confirmacion = false;
-                return;
-            }
-
-            for (Integer idObjeto : usados) {
-                inventarioObjetoService.asignarObjetoAInventario(
-                        inventarioId,
-                        idObjeto
-                );
-            }
-
-            lbl_msg.setText("Inventario #" + inventarioId + " creado exitosamente.");
-            confirmacion = false;
-
-        } catch (DateTimeParseException e) {
-            lbl_msg.setText("Error: Formato de hora inválido (HH:mm)");
-            confirmacion = false;
+            sesionManager.setConciertoTemporal(null);
+            sceneManager.showMenuConcierto();
         } catch (Exception e) {
-            lbl_msg.setText("Ocurrió un error inesperado.");
-            confirmacion = false;
             e.printStackTrace();
         }
     }
-    @FXML
-    void on_bt_volver(ActionEvent event) throws IOException {
-        sceneManager.showMenu();
-    }
 
+    @FXML
+    void on_bt_volver() throws Exception {
+        sesionManager.setConciertoTemporal(null);
+        sceneManager.showMenuConcierto();
+    }
 }

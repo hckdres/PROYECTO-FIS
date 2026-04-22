@@ -1,36 +1,21 @@
 package org.example.ax0006.Service;
 
-import org.example.ax0006.Entity.Horario;
-import org.example.ax0006.Entity.Inventario;
 import org.example.ax0006.Repository.InventarioRepository;
+import java.util.List;
 
 public class InventarioService {
+    private InventarioRepository inventarioRepo;
 
-    private InventarioRepository inventarioRepository;
-
-    public InventarioService(InventarioRepository inventarioRepository) {
-        this.inventarioRepository = inventarioRepository;
+    public InventarioService(InventarioRepository inventarioRepo) {
+        this.inventarioRepo = inventarioRepo;
     }
 
-    public int crearInventario(Horario horario) {
-        Inventario inventario = new Inventario();
-
-        int idInventario = inventarioRepository.guardarInventario(inventario);
-
-        if (idInventario != -1) {
-            int idHorario = inventarioRepository.guardarHorario(horario);
-
-            if (idHorario != -1) {
-                inventarioRepository.vincularInventarioHorario(idInventario, idHorario);
-                return idInventario;
-            }
-        }
-
-        return -1;
+    public int crearDocumentoInventario(int idConcierto, int idHorario, List<Integer> idsObjetos) {
+        return inventarioRepo.crearDocumentoInventario(idConcierto, idHorario, idsObjetos);
     }
 
-    public boolean existeHorario(Horario h) {
-        return inventarioRepository.existeHorario(h);
+    public List<String> obtenerObjetosPorConcierto(int idConcierto) {
+        return inventarioRepo.obtenerObjetosPorConcierto(idConcierto);
     }
 
 }

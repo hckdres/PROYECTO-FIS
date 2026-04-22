@@ -1,31 +1,20 @@
 package org.example.ax0006.Entity;
 
 public class TipoObjeto {
-    int idTipoObjeto;
-    String nombre;
+    private int idTipoObjeto;
+    private String tipo;
 
-    public TipoObjeto(String nombre) {
-        this.nombre = nombre;
-    }
+    public TipoObjeto() {}
 
-    public int getIdTipoObjeto() {
-        return idTipoObjeto;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setIdTipoObjeto(int idTipoObjeto) {
+    public TipoObjeto(int idTipoObjeto, String tipo) {
         this.idTipoObjeto = idTipoObjeto;
+        this.tipo = tipo;
     }
 
-    @Override
-    public String toString() {
-        return nombre;
-    }
+    // Getters y Setters
+    public int getIdTipoObjeto() { return idTipoObjeto; }
+    public void setIdTipoObjeto(int idTipoObjeto) { this.idTipoObjeto = idTipoObjeto; }
+
+    public String getTipo() { return tipo; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
 }

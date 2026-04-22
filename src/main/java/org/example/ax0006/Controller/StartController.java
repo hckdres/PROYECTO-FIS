@@ -19,15 +19,13 @@ public class StartController extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        // BASE DE DATOS
         H2 h2 = new H2();
         h2.inicializarDB();
 
-        // VALIDATORS
+
         HorarioValidator horarioValidator = new HorarioValidator();
         ConciertoValidator conciertoValidator = new ConciertoValidator(horarioValidator);
 
-        // REPOSITORIOS
         UsuarioRepository usuarioRepo = new UsuarioRepository(h2);
         RolRepository rolRepo = new RolRepository(h2);
         HorarioRepository horarioRepo = new HorarioRepository(h2);
@@ -36,23 +34,21 @@ public class StartController extends Application {
         ContratoRepository contratoRepo = new ContratoRepository(h2);
 
         InventarioRepository inventarioRepo = new InventarioRepository(h2);
-        TipoObjetoRepository tipoObjetoRepo = new TipoObjetoRepository(h2);
         InventarioObjetoRepository inventarioObjetoRepo = new InventarioObjetoRepository(h2);
+        ObjetoRepository objetoRepo = new ObjetoRepository(h2);
 
         AutenticacionService autenService = new AutenticacionService(usuarioRepo);
         ProfileService profileService = new ProfileService(usuarioRepo);
         RolService rolService = new RolService(rolRepo, usuarioRepo);
         ContratoService contratoService = new ContratoService(contratoRepo);
-        ConciertoService conciertoService = new ConciertoService(conciertoRepo, horarioRepo, conciertoValidator, contratoService);
-        StaffService staffService = new StaffService(usuarioRepo, asignacionStaffRepo);
 
         InventarioService inventarioService = new InventarioService(inventarioRepo);
-        crearTipoObjetoService tipoObjetoService = new crearTipoObjetoService(tipoObjetoRepo);
+        ConciertoService conciertoService = new ConciertoService(conciertoRepo, horarioRepo, conciertoValidator, contratoService, inventarioService);
+        StaffService staffService = new StaffService(usuarioRepo, asignacionStaffRepo);
+
         InventarioObjetoService inventarioObjetoService = new InventarioObjetoService(inventarioObjetoRepo);
-        consultarInventarioService consultarInventarioService = new consultarInventarioService(inventarioRepo);
+        ObjetoService objetoService = new ObjetoService(objetoRepo);
 
-
-        // MANAGERS
         SesionManager sesion = new SesionManager();
 
         ContextManager context = new ContextManager(
@@ -68,11 +64,8 @@ public class StartController extends Application {
                 sesion,
                 staffService,
                 inventarioService,
-                tipoObjetoService,
                 inventarioObjetoService,
-                consultarInventarioService,
-                staffService,
-                conciertoRepo,
+                objetoService,
                 contratoService,
                 contratoRepo
         );
