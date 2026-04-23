@@ -49,6 +49,10 @@ public class NominaService {
         double horasBase = calcularHorasTrabajadas(concierto);
         List<Usuario> staffList = asignacionStaffRepository.obtenerUsuariosPorConcierto(idConcierto);
 
+        // 👇 PEGA ESTO AQUÍ
+        System.out.println("Staff encontrados: " + staffList.size());
+        System.out.println("Horas calculadas: " + horasBase);
+
         for (Usuario u : staffList) {
             List<Nomina> existentes = nominaRepository.obtenerPorConcierto(idConcierto);
             boolean existe = existentes.stream().anyMatch(n -> n.getIdUsuario() == u.getIdUsuario());
@@ -67,12 +71,10 @@ public class NominaService {
     }
 
     public void actualizarHorasExtra(int idNomina, double horasExtra) {
-        // Buscar la nómina por ID
-        List<Nomina> todas = nominaRepository.obtenerPorConcierto(0); // Solución temporal: necesitamos un método obtenerPorId()
-        Nomina n = todas.stream().filter(nom -> nom.getIdNomina() == idNomina).findFirst().orElse(null);
+        Nomina n = nominaRepository.obtenerPorId(idNomina); // <- fix: antes llamaba obtenerPorConcierto(0)
         if (n == null) return;
-
-        double nuevoTotal = (n.getHorasTrabajadas() * n.getTarifaPorHora()) + (horasExtra * n.getTarifaPorHora() * 1.5);
+        double nuevoTotal = (n.getHorasTrabajadas() * n.getTarifaPorHora())
+                + (horasExtra * n.getTarifaPorHora() * 1.5);
         nominaRepository.actualizarHorasExtraYTotal(idNomina, horasExtra, nuevoTotal);
     }
 

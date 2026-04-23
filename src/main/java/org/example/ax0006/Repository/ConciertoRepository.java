@@ -50,6 +50,48 @@ public class ConciertoRepository {
     }
 
 
+    public Concierto obtenerPorId(int idConcierto) {
+
+        String sql = """
+            SELECT c.idConcierto, c.nombreConcierto, c.aforo, c.programado,
+                   h.idHorario, h.fechaInc, h.fechaFin, h.horaInc, h.horaFin
+            FROM Concierto c
+            JOIN Horario h ON c.idHorario = h.idHorario
+            WHERE c.idConcierto = ?
+        """;
+
+        try (Connection conn = h2.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idConcierto);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                Horario h = new Horario();
+                h.setIdHorario(rs.getInt("idHorario"));
+                h.setFechaInicio(rs.getDate("fechaInc").toLocalDate());
+                h.setFechaFin(rs.getDate("fechaFin").toLocalDate());
+                h.setHoraInicio(rs.getTime("horaInc").toLocalTime());
+                h.setHoraFin(rs.getTime("horaFin").toLocalTime());
+
+                return new Concierto(
+                        rs.getInt("idConcierto"),
+                        rs.getString("nombreConcierto"),
+                        h,
+                        rs.getInt("aforo"),
+                        null,
+                        rs.getBoolean("programado")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     // El siguiente metodo para que lo sepan obtiene los conciertos pero directamente desde la tabla para el filtro del dropdown en gestion de usuarios.
     public List<Concierto> obtenerConciertosSolos() {
